@@ -1,4 +1,4 @@
-import Admission from "../models/admission.js";
+import Admission from "../models/Admission.js";
 
 export const createAdmission = async (req, res) => {
   try {
