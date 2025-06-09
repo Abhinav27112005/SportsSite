@@ -47,8 +47,7 @@ app.get('/api/test-db', async (req, res) => {
     if (!pool) {
       throw new Error('Database pool is not initialized');
     }
-    
-    const [rows] = await pool.query('SELECT 1 + 1 AS solution, NOW() AS `current_time`');
+    const { rows } = await pool.query('SELECT 1 + 1 AS solution, NOW() AS current_time');
     console.log('✅ Database query successful:', rows[0]);
     
     res.json({ 
@@ -62,7 +61,12 @@ app.get('/api/test-db', async (req, res) => {
     res.status(500).json({ 
       success: false, 
       error: err.message,
-      stack: process.env.NODE_ENV === 'development' ? err.stack : undefined
+      stack: process.env.NODE_ENV === 'development' ? err.stack : undefined,
+      dbError: {
+        code: err.code,
+        detail: err.detail,
+        hint: err.hint
+      }
     });
   }
 });
