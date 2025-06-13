@@ -3,14 +3,11 @@ import path from 'path';
 import fs from 'fs';
 import { fileURLToPath } from 'url';
 import pool from '../config/db.js'
+import cloudinary from '../config/cloudinary.js';
 
 if (!pool) {
     throw new Error('Database connection not established');
 }
-// ES module fix for __dirname
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
 export const getPublicEvents = async (req, res) => {
     try {
         const events = await Event.getAll();
@@ -44,10 +41,8 @@ export const createEvent = async (req, res) => {
             return res.status(400).json({ error: 'Image is required' });
         }
         
-        const imagePath = `/public/uploads/${req.file.filename}`;
-        
         const newEvent = await Event.create({ 
-            image_path: imagePath, 
+            image_path: req.file.path,//Cloudinary path 
             title: req.body.title, 
             comment: req.body.comment, 
             date: req.body.date 
@@ -72,12 +67,10 @@ export const deleteEvent = async (req, res) => {
         const eventId = req.params.id;
         const imagePath = await Event.getImagePath(eventId);
         
-        // Delete file if exists
+        // Delete file from cloudinary
         if (imagePath) {
-            const fullPath = path.join(__dirname, 'public', imagePath.replace('/public/', ''));
-            fs.unlink(fullPath, (err) => {
-                if (err) console.error('Error deleting file:', err);
-            });
+            const publicId = path.basename(imagePath, path.extname(imagePath));
+            await cloudinary.uploader.destroy(`Events/${publicId}`);
         }
         
         await Event.delete(eventId);

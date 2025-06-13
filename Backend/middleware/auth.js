@@ -6,15 +6,31 @@ export const verifyToken = (req, res, next) => {
     const token = req.headers['authorization']?.split(' ')[1];
     
     if (!token) {
-        return res.status(403).send("A token is required for authentication");
+        return res.status(403).json({ 
+            message: "Authentication token required",
+            code: "TOKEN_REQUIRED"
+        });
     }
 
     try {
         const decoded = jwt.verify(token, jwtConfig.secret);
+        if(decoded.exp && decoded.exp < Date.now()/1000){
+            return res.status(401).json({ 
+                message: "Token has expired",
+                code: "TOKEN_EXPIRED"
+            });
+        }
         req.user = decoded;
         next();
     } catch (err) {
-        return res.status(401).send("Invalid Token");
+        const message = err.name === 'TokenExpiredError' 
+            ? "Token expired" 
+            : "Invalid token";
+        const code = err.name === 'TokenExpiredError'
+            ? "TOKEN_EXPIRED"
+            : "INVALID_TOKEN";
+            
+        return res.status(401).json({ message, code });
     }
 };
 
