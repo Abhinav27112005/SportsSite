@@ -14,7 +14,7 @@ export const verifyToken = (req, res, next) => {
 
     try {
         const decoded = jwt.verify(token, jwtConfig.secret);
-        if(decoded.exp && decoded.exp < Date.now()/1000){
+        if(decoded.exp && (decoded.exp-300) < Date.now()/1000){
             return res.status(401).json({ 
                 message: "Token has expired",
                 code: "TOKEN_EXPIRED"

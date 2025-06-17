@@ -60,3 +60,20 @@ export const login = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 };
+
+export const refreshToken = async (req, res) => {
+  try {
+    const token = req.headers['authorization']?.split(' ')[1];
+    const decoded = jwt.verify(token, jwtConfig.secret, { ignoreExpiration: true });
+    
+    const newToken = jwt.sign(
+      { id: decoded.id, is_admin: decoded.is_admin },
+      jwtConfig.secret,
+      { expiresIn: jwtConfig.expiresIn }
+    );
+    
+    res.json({ token: newToken });
+  } catch (error) {
+    res.status(401).json({ error: error.message });
+  }
+};

@@ -16,4 +16,5 @@ router.get('/verify-token', verifyToken, (req, res) =>{
         }
     })
 })
+router.post('/refresh-token', refreshToken);
 export default router;
