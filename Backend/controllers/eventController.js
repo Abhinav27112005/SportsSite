@@ -40,12 +40,11 @@ export const createEvent = async (req, res) => {
         if (!req.file) {
             return res.status(400).json({ error: 'Image is required' });
         }
-        
-        const newEvent = await Event.create({ 
-            image_path: req.file.path,//Cloudinary path 
-            title: req.body.title, 
-            comment: req.body.comment, 
-            date: req.body.date 
+         const newEvent = await Event.create({ 
+            image_path: req.file.path, 
+            title, 
+            comment, 
+            date 
         });
         res.status(201).json(newEvent);
     } catch (error) {
@@ -54,7 +53,10 @@ export const createEvent = async (req, res) => {
             stack: error.stack,
             dbError: error.code
         });
-        
+        if(req.file){
+            fs.unlink(req.file.path,()=>{
+                console.error('Failed to delete temporary file:', req.file.path);});
+        }
         res.status(500).json({ 
             error: 'Failed to create event',
             details: process.env.NODE_ENV === 'development' ? error.message : undefined
