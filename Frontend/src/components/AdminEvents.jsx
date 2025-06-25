@@ -69,9 +69,14 @@ const AdminEvents = () => {
 const handleSubmit = async (e) => {
   e.preventDefault();
   
-  // Validate required fields
-  if (!formData.title || !formData.comment || !formData.date || !formData.image) {
-    setError('All fields including image are required');
+  // Modified validation - better check for image
+  if (!formData.title.trim() || !formData.comment.trim() || !formData.date) {
+    setError('Title, description and date are required');
+    return;
+  }
+  
+  if (!formData.image) {  // Separate check for image
+    setError('Please select an image');
     return;
   }
 
@@ -248,6 +253,7 @@ const handleSubmit = async (e) => {
               <Form.Control
                 type="file"
                 accept="image/*"
+                name="image"  // Add this line
                 onChange={handleImageChange}
                 className='fs-4 fw-normal'
               />
