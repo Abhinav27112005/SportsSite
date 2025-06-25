@@ -1,7 +1,7 @@
 import React from "react";
 import { ImageSlider } from "../components/ImageSlider";
 import { Gallery } from "../components/Gallery";
-import { AboutUs } from "../components/AboutUs";
+import { AboutUs } from "../components/AboutUS";
 import { ContactForm } from "../components/ContactForm";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import "./Home.css";
