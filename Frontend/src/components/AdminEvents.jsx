@@ -85,7 +85,8 @@ const handleSubmit = async (e) => {
     setLoading(true);
     const newEvent = await apiFetch('/events/admin/create', { 
       method: 'POST',
-      body: formDataToSend
+      body: formDataToSend,
+      headers: {}
     });
      if (!newEvent) {
       throw new Error('No response from server');
