@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Table, Button, Alert, Modal, Form } from 'react-bootstrap';
 import apiFetch from './api';
+import './AdminEvents.css';
 
 const AdminEvents = () => {
   const [events, setEvents] = useState([]);
@@ -86,7 +87,9 @@ const handleSubmit = async (e) => {
       method: 'POST',
       body: formDataToSend
     });
-    
+     if (!newEvent) {
+      throw new Error('No response from server');
+    }
     setEvents(prevEvents => [newEvent, ...prevEvents]);
     setShowModal(false);
     setFormData({
@@ -157,14 +160,13 @@ const handleSubmit = async (e) => {
               <td>
                 {event.image_path ? (
                     <img 
-                    src={event.image_path.startsWith('http') 
-                        ? event.image_path 
-                        : `${import.meta.env.VITE_API_BASE_URL.replace('/api', '')}${event.image_path}`} 
+                    src={event.image_path} 
                         alt="Event" 
                         style={{ width: '100px' }}
                         onError={(e) => {
                             e.target.onerror = null; 
                             e.target.src = '/placeholder-image.jpg'
+                            e.target.style.objectFit = 'contain';
                         }}
                     />
                     ) : (
@@ -180,7 +182,11 @@ const handleSubmit = async (e) => {
                     setShowDeleteModal(true);
                   }}
                   className='fs-4 fw-normal'
+                  disabled={loading && selectedId === event.id}
                 >
+                  {loading && selectedId === event.id ? (
+                    <span className="spinner-border spinner-border-sm me-2"></span>
+                  ) : null}
                   Delete
                 </Button>
               </td>
@@ -210,6 +216,7 @@ const handleSubmit = async (e) => {
                 className='fs-4 fw-normal'
               />
             </Form.Group>
+            {error && <Alert variant="danger" className="mt-3">{error}</Alert>}
             <Form.Group className="mb-3">
               <Form.Label>Description</Form.Label>
               <Form.Control
@@ -222,17 +229,19 @@ const handleSubmit = async (e) => {
                 className='fs-4 fw-normal'
               />
             </Form.Group>
+            {error && <Alert variant="danger" className="mt-3">{error}</Alert>}
             <Form.Group className="mb-3">
               <Form.Label>Date</Form.Label>
               <Form.Control
                 type="date"
                 name="date"
-                value={formData.date}
+                value={formData.date || new Date().toISOString().split('T')[0]}
                 onChange={handleInputChange}
                 required
                 className='fs-4 fw-normal'
               />
             </Form.Group>
+            {error && <Alert variant="danger" className="mt-3">{error}</Alert>}
             <Form.Group className="mb-3">
               <Form.Label>Image</Form.Label>
               <Form.Control
@@ -249,6 +258,7 @@ const handleSubmit = async (e) => {
                 />
               )}
             </Form.Group>
+            {error && <Alert variant="danger" className="mt-3">{error}</Alert>}
             <Button variant="primary" type="submit" className='fs-4 fw-normal'>
               Save Event
             </Button>
@@ -270,7 +280,7 @@ const handleSubmit = async (e) => {
           <Button variant="secondary" onClick={() => setShowDeleteModal(false)}>
             Cancel
           </Button>
-          <Button variant="danger" onClick={handleDelete}>
+          <Button variant="danger" onClick={handleDelete} disabled={loading} >
             {loading ? (
               <>
                 <Spinner animation="border" size="sm" className="me-2" />

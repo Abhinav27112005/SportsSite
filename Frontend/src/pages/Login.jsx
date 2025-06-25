@@ -4,6 +4,8 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "./Login.css";
 import * as jwt_decode from 'jwt-decode';
 import validate from "./LoginValidation";
+import { refreshAuthToken } from "../components/api";
+import { useAuth } from "../Wrapper/AuthContext";
 const Login = () => {
   const [formData, setFormData] = useState({
     email: "",
@@ -12,9 +14,32 @@ const Login = () => {
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
-
+  const {login}=useAuth();
   useEffect(() => {
     const token = localStorage.getItem('authToken');
+    const verifyAndRefresh = async () => {
+    if (!token) return;
+
+    try {
+      const decoded = jwt_decode(token);
+      console.log('Token status:', {
+        expires: new Date(decoded.exp * 1000),
+        current: new Date()
+      });
+
+      // If token expires within 5 minutes, try to refresh
+      if (decoded.exp * 1000 < Date.now() + 300000) {
+        const refreshed = await refreshAuthToken();
+        if (!refreshed) {
+          localStorage.clear();
+        }
+      }
+    } catch (e) {
+      console.error("Token verification failed:", e);
+      localStorage.clear();
+    }
+  };
+
     if (token) {
       try {
         const decoded = jwt_decode(token); // Use jwt_decode correctly
@@ -22,19 +47,25 @@ const Login = () => {
         if (!decoded || typeof decoded !== 'object') {
           throw new Error('Invalid token format');
         }
+        // Add verification logging
+        console.log('Token decoded:', decoded);
+        console.log('Token expires:', new Date(decoded.exp * 1000));
+        
         if (decoded && decoded.exp * 1000 < Date.now()) {
           // Token expired, log out
-          localStorage.removeItem('authToken');
-          localStorage.removeItem('isLoggedIn');
-          throw new Error('Token expired');
+          console.log('Token expired - clearing storage');
+          localStorage.clear();
         }
       } catch (e) {
-        console.error("Token decode error:", e);
-        localStorage.removeItem('authToken');
-        localStorage.removeItem('isLoggedIn');
-        localStorage.removeItem('user');
+        console.error("Token verification failed:", e);
+        localStorage.clear();
       }
     }
+    
+  verifyAndRefresh();
+    // Cleanup function to clear any potential event listeners or intervals
+    return () => {
+    };
   }, []);
 
   const handleInput = (e) => {
@@ -62,34 +93,17 @@ const Login = () => {
         headers: { 
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          email: formData.email,    
-          password: formData.password
-        }),
+        body: JSON.stringify(formData)
       });
-      
-      // First check if we got any response at all
-      if (!response) {
-        throw new Error('No response from server - check your connection');
-      }
 
-      const data = await response.json();
-      
-      if (response.ok) {
-        localStorage.setItem('authToken', data.token);
-        localStorage.setItem('isLoggedIn', 'true');
-        localStorage.setItem('user', JSON.stringify(data.user)); 
-        navigate('/');
-      } else {
-        // More specific error messages based on status code
-        let errorMessage = 'Login failed';
-        if (response.status === 401) {
-          errorMessage = data.message || 'Invalid email or password';
-        } else if (response.status === 500) {
-          errorMessage = 'Server error - please try again later';
-        }
-        setErrors({ submit: errorMessage });
+      if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.message || 'Login failed');
       }
+      const { token, user } = await response.json();
+      login(token, user);
+      navigate('/');
+      
     } catch (error) {
       // More detailed error handling
       let errorMessage = error.message;

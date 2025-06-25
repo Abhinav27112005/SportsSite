@@ -1,5 +1,5 @@
 
-const baseURL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8081/api';
+const baseURL = import.meta.env.VITE_API_BASE_URL || 'https://sportssite.onrender.com/api';
 
 const apiFetch = async (url, options = {}) => {
   const token = localStorage.getItem('authToken');
@@ -9,6 +9,12 @@ const apiFetch = async (url, options = {}) => {
     'Content-Type': 'application/json',
     ...(options.headers || {})
   };
+
+   // Add verification of token presence
+  if (token && !localStorage.getItem('isLoggedIn')) {
+    console.warn('Token exists but no login flag - clearing');
+    localStorage.removeItem('authToken');
+  }
 
   // Add auth token if available
   if (token) {
@@ -30,6 +36,7 @@ const apiFetch = async (url, options = {}) => {
     // Handle unauthorized responses
     if (response.status === 401) {
       localStorage.removeItem('authToken');
+      localStorage.removeItem('isLoggedIn');
       localStorage.removeItem('user');
       window.location.href = '/login?session_expired=true';
       return Promise.reject(new Error('Session expired'));
@@ -53,7 +60,32 @@ const apiFetch = async (url, options = {}) => {
     throw error;
   }
 };
+let isRefreshing = false;
 
+export const refreshAuthToken = async () => {
+  if (isRefreshing) return;
+  isRefreshing = true;
+  
+  try {
+    const response = await fetch(`${baseURL}/auth/refresh-token`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('authToken')}`
+      }
+    });
+    
+    if (response.ok) {
+      const { token } = await response.json();
+      localStorage.setItem('authToken', token);
+      return true;
+    }
+  } catch (error) {
+    console.error('Token refresh failed:', error);
+  } finally {
+    isRefreshing = false;
+  }
+  return false;
+};
 
 // Add specialized admin fetch if needed
 export const adminFetch = async (url, options = {}) => {
@@ -78,4 +110,13 @@ export const admissionAPI = {
   })
 };
 
+export const verifySession=async()=>{
+  try{
+    const response = await apiFetch('/auth/verify-token');
+    return response?.valid === true;
+  }catch(error){
+    console.error('Session verification failed:', error);
+    return false;
+  }
+}
 export default apiFetch;

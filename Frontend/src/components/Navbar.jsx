@@ -4,17 +4,44 @@ import { RxHamburgerMenu } from "react-icons/rx";
 import { Button, Dropdown } from "react-bootstrap";
 import './Navbar.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { verifySession } from "./api";
+import { useCallback } from "react";
 
 export const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const navigate = useNavigate();
+  
+const checkAuthStatus = useCallback(async () => {
+  const token = localStorage.getItem('authToken');
+  if (!token) {
+    setIsLoggedIn(false);
+    return false;
+  }
+  
+  try {
+    const isValid = await verifySession();
+    setIsLoggedIn(isValid);
+    return isValid;
+  } catch (error) {
+    console.error("Auth check failed:", error);
+    setIsLoggedIn(false);
+    return false;
+  }
+}, []);
+// Then useEffect can safely depend on checkAuthStatus
+useEffect(() => {
+  checkAuthStatus();
+  const interval = setInterval(checkAuthStatus, 5 * 60 * 1000);
+  const handleFocus = () => checkAuthStatus();
+  window.addEventListener('focus', handleFocus);
 
-  // Check login status on component mount
-  useEffect(() => {
-    const loggedIn = localStorage.getItem('isLoggedIn') === 'true';
-    setIsLoggedIn(loggedIn);
-  }, []);
+  return () => {
+    clearInterval(interval);
+    window.removeEventListener('focus', handleFocus);
+  };
+}, [checkAuthStatus]); // Now depends on the memoized function
+
 
   const toggleMenu = () => setMenuOpen(!menuOpen);
 
@@ -38,12 +65,15 @@ export const Navbar = () => {
           <div className="d-flex align-items-center ">
             <div className="me-3">
               <img 
-                src="assets/Picture2.png" 
+                src="https://img.freepik.com/free-vector/modern-sport-logo-design_23-2147849739.jpg" 
                 alt="logo" 
                 style={{ 
                   height: '65px',
                   transition: 'transform 0.3s ease',
-                  cursor: 'pointer'
+                  cursor: 'pointer',
+                  borderRadius: '50%',
+                  boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+                  objectFit: 'cover'
                 }}
                 onClick={() => navigate('/')}
                 onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.05)'}
@@ -216,17 +246,6 @@ export const Navbar = () => {
           </div>
         )}
       </div>
-    
-      {/* Add this to your CSS file */}
-      <style jsx>{`
-        @keyframes fadeIn {
-          from { opacity: 0; transform: translateY(-10px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-        .nav-link:hover {
-          background-color: rgba(0,0,0,0.03);
-        }
-      `}</style>
     </header>
   );
 };

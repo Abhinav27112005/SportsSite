@@ -5,10 +5,11 @@ import App from './App';
 import './index.css'; // Optional: your base styles
 import { BrowserRouter } from 'react-router-dom';
 import "bootstrap/dist/css/bootstrap.min.css";
+import { AuthProvider } from './Wrapper/AuthContext';
 ReactDOM.createRoot(document.getElementById('root')).render(
-  <React.StrictMode>
     <BrowserRouter>
+    <AuthProvider>
     <App />
+    </AuthProvider>
     </BrowserRouter>
-  </React.StrictMode>,
 );

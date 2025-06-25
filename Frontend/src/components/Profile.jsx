@@ -27,7 +27,7 @@ const Profile = () => {
         setUserData({
           name: data.name,
           email: data.email,
-          is_admin: data.is_admin || false // Add this line
+          is_admin: data.is_admin || false
       });
         setFormData({
           name: data.name,
