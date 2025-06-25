@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./Login.css";
 import * as jwt_decode from 'jwt-decode';
-import validate from "./LoginValidation";
+import validate from "./Loginvalidation";
 import { refreshAuthToken } from "../components/api";
 import { useAuth } from "../Wrapper/AuthContext";
 const Login = () => {
