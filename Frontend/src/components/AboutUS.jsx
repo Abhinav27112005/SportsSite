@@ -1,5 +1,5 @@
 import React from 'react';
-import './AboutUs.css';
+import './AboutUS.css';
 import "bootstrap/dist/css/bootstrap.min.css";
 export const AboutUs = () => {
   return (
