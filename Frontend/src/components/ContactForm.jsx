@@ -64,15 +64,7 @@ const [message,setMessage]=useState("");
     <section className="contact-section">
       <div className="contact-container">
         <h2 className="contact-title fw-bolder fs-1 text-primary ">📬 Contact Us</h2>
-
-        {/* Contact Info */}
-        <div className="contact-info">
-          <p><strong>📞 Phone:</strong> +91 7209678999</p>
-          <p><strong>📧 Email:</strong> info@rv.in</p>
-          <p><strong>📍 Visit Us:</strong> Gridih, Jharkhand, India</p>
-        </div>
-
-        {message && <div className="alert alert-success fs-4 fw-4">{message}</div>}
+        {message && <div className="alert alert-success fs-5 fw-4">{message}</div>}
         <form className="contact-form" onSubmit={handleSubmit}>
         <input
             type="text"
@@ -81,9 +73,9 @@ const [message,setMessage]=useState("");
             required
             value={formData.name}
             onChange={handleChange}
-            className={`form-control fs-4 ${errors.name ? "is-invalid" : ""}`}
+            className={`form-control fs-5 ${errors.name ? "is-invalid" : ""}`}
           />
-          {errors.name && <div className="invalid-feedback fs-4 fw-4">{errors.name}</div>}
+          {errors.name && <div className="invalid-feedback fs-5 fw-4">{errors.name}</div>}
 
           <input
             type="email"
@@ -92,9 +84,9 @@ const [message,setMessage]=useState("");
             required
             value={formData.email}
             onChange={handleChange}
-            className={`form-control fs-4 ${errors.email ? "is-invalid" : ""}`}
+            className={`form-control fs-5 ${errors.email ? "is-invalid" : ""}`}
           />
-          {errors.email && <div className="invalid-feedback fs-4 fw-4">{errors.email}</div>}
+          {errors.email && <div className="invalid-feedback fs-5 fw-4">{errors.email}</div>}
 
           <textarea
             name="message"
@@ -103,12 +95,12 @@ const [message,setMessage]=useState("");
             required
             value={formData.message}
             onChange={handleChange}
-            className={`form-control fs-4 ${errors.message ? "is-invalid" : ""}`}
+            className={`form-control fs-5 ${errors.message ? "is-invalid" : ""}`}
           ></textarea>
-          {errors.message && <div className="invalid-feedback fs-4 fw-4">{errors.message}</div>}
+          {errors.message && <div className="invalid-feedback fs-5 fw-4">{errors.message}</div>}
           <button 
             type="submit" 
-            className="cta-button hover-soft"
+            className={`cta-button hover-soft ${isLoading ? 'cursorNone' : 'cursorPointer'}`}
             disabled={isLoading}
           >
             {isLoading ? 'Sending...' : 'Send Message'}

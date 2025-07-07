@@ -67,11 +67,11 @@ const Signup = () => {
   };
 
   return (
-    <div className="auth-container fs-3 fw-normal no-scrollbar d-flex flex-column">
+    <div className="auth-container fw-normal no-scrollbar d-flex flex-column">
       <Link to="/" className="text-center cta-button control auth-logo text-decoration-none">Home</Link>
       <div className="auth-card">
         <h2 className="auth-title">Create Your Account</h2>
-        <p className="auth-subtitle">Sign up to join Bijoy Institute.</p>
+        <p className="auth-subtitle">Sign up to join Sports Club.</p>
         
         <form onSubmit={handleSubmit} className="auth-form">
           <div className="form-group">
@@ -79,7 +79,7 @@ const Signup = () => {
             <input
               type="text"
               id="name"
-              className={`form-input fs-4 ${errors.name ? "is-invalid" : ""}`}
+              className={`form-input ${errors.name ? "is-invalid" : ""}`}
               placeholder="John Doe"
               name="name"
               value={formData.name}
@@ -93,7 +93,7 @@ const Signup = () => {
             <input
               type="email"
               id="email"
-              className={`form-input fs-4 ${errors.email ? "is-invalid" : ""}`}
+              className={`form-input ${errors.email ? "is-invalid" : ""}`}
               placeholder="you@example.com"
               name="email"
               value={formData.email}
@@ -107,7 +107,7 @@ const Signup = () => {
             <input
               type="password"
               id="password"
-              className={`form-input fs-4 ${errors.password ? "is-invalid" : ""}`}
+              className={`form-input ${errors.password ? "is-invalid" : ""}`}
               placeholder="••••••••"
               name="password"
               value={formData.password}
@@ -121,7 +121,7 @@ const Signup = () => {
             <input
               type="password"
               id="confirmPassword"
-              className={`form-input fs-4 ${errors.confirmPassword ? "is-invalid" : ""}`}
+              className={`form-input ${errors.confirmPassword ? "is-invalid" : ""}`}
               placeholder="••••••••"
               name="confirmPassword"
               value={formData.confirmPassword}
@@ -135,7 +135,7 @@ const Signup = () => {
         
         <p className="auth-footer">
           Already have an account?{" "}
-          <Link to="/login" className="auth-link fs-4 text-decoration-none">
+          <Link to="/login" className="auth-link text-decoration-none">
             Log in
           </Link>
         </p>

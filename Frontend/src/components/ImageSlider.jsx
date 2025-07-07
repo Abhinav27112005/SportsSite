@@ -22,18 +22,33 @@ export const ImageSlider = () => {
       alt: "Badminton tournament" 
     },
     { 
-      src: "assets/images/img21.jpg", 
+      src: "assets/images/gallery20.jpeg", 
       alt: "Badminton court action" 
     },
     { 
-      src: "assets/images/img22.jpg", 
+      src: "assets/images/gallery21.jpeg", 
       alt: "Badminton court action" 
     },
     { 
-      src: "assets/images/img23.jpg", 
+      src: "assets/images/gallery22.jpeg", 
       alt: "Badminton court action" 
     },
   ];
+    const OverlayContent=()=>(
+        <div className="overlay">
+            <div className="content-wrapper">
+              <img className="logo" src="assets/Picture2.jpeg" alt="Sports Club Logo" />
+              <h1>Sports Club</h1>
+                  <p>
+                    Empowering champions since 1938, Sports Club stands at the forefront of badminton excellence. 
+                    For over eighty years, our commitment to world-class coaching and athlete development has shaped 
+                    future stars and inspired a legacy of sporting achievement at both national and international levels.
+                  </p>
+                  <button className="cta-button" onClick={()=>navigate('/admission')}>Join Our Academy</button>
+            </div>
+          </div>
+
+    );
 
   return (
     <div className="slider-wrapper">
@@ -49,23 +64,11 @@ export const ImageSlider = () => {
           <SwiperSlide key={idx}>
             <div className="slider-slide">
               <img src={img.src} alt={img.alt}  className="slider-image py-2"/>
-              <div className="overlay">
-                <div className="content-wrapper">
-                  <img className="logo" src="assets/Picture2.png" alt="Bijoy Institute Logo" />
-                  <h1>Bijoy Institute Giridih</h1>
-                  <p>
-                    Founded in 1938, Bijoy Institute has been a pioneering force in nurturing badminton talent. 
-                    With over eight decades of dedication, we've built a reputation as one of the premier 
-                    badminton training institutes, producing skilled athletes who excel in national and 
-                    international competitions.
-                  </p>
-                  <button className="cta-button" onClick={()=>navigate('/admission')}>Join Our Academy</button>
-                </div>
-              </div>
             </div>
           </SwiperSlide>
         ))}
       </Swiper>
-    </div>
+        <OverlayContent/>
+          </div>
   );
 };

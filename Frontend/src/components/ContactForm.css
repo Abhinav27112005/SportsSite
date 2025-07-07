@@ -16,20 +16,7 @@
     color: #2c3e50;
   }
   
-  .contact-info {
-    margin-bottom: 30px;
-    font-size: 1rem;
-    color: #333;
-    text-align: left;
-    background-color: #ffffff;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-  }
-  
-  .contact-info p {
-    margin: 8px 0;
-  }
+
   
   .contact-form {
     display: flex;
@@ -78,5 +65,13 @@
     .contact-info {
       text-align: center;
     }
+  }
+
+  .cursorNone{
+      cursor:not-allowed;
+      opacity:no-drop;
+  }
+  .cursorPointer{
+      cursor:pointer;
   }
   

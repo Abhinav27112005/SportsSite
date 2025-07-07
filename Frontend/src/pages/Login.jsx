@@ -118,7 +118,7 @@ const Login = () => {
 };
 
   return (
-    <div className="auth-container fs-3 fw-normal no-scrollbar d-flex flex-column ">
+    <div className="auth-container fw-normal no-scrollbar d-flex flex-column ">
       <Link to="/" className="auth-logo btn btn-primary cta-button control">Home Page</Link>
       <div className="auth-card">
         <h2 className="auth-title">Welcome Back</h2>
@@ -130,7 +130,7 @@ const Login = () => {
             <input
               type="email"
               id="email"
-              className={`form-input fs-4 ${errors.email ? "is-invalid" : ""}`}
+              className={`form-input ${errors.email ? "is-invalid" : ""}`}
               placeholder="you@example.com"
               value={formData.email}
               onChange={handleInput}
@@ -144,7 +144,7 @@ const Login = () => {
             <input
               type="password"
               id="password"
-              className={`form-input fs-4 ${errors.password ? "is-invalid" : ""}`}
+              className={`form-input ${errors.password ? "is-invalid" : ""}`}
               placeholder="••••••••"
               value={formData.password}
               onChange={handleInput}
@@ -162,7 +162,7 @@ const Login = () => {
         
         <p className="auth-footer">
           Don't have an account?{" "}
-          <Link to="/signup" className="auth-link fs-4 text-decoration-none">
+          <Link to="/signup" className="auth-link  text-decoration-none">
             Signup
           </Link>
         </p>

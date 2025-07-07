@@ -108,7 +108,7 @@ const handlePasswordSubmit = async (e) => {
   if (error && !isEditing && !isChangingPassword) {
     return (
       <div className="container mt-5">
-        <div className="alert alert-danger fs-4 fw-bold">
+        <div className="alert alert-danger fw-bold">
           {error}
         </div>
         <button 

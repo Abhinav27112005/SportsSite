@@ -164,3 +164,9 @@ footer a:hover {
   background: var(--accent-hover);
   box-shadow: 0 6px 20px rgba(74, 137, 220, 0.5);
 }
+
+ .contact-title {
+    font-size: 2rem;
+    margin-bottom: 30px;
+    color: #2c3e50;
+  }
