@@ -88,7 +88,7 @@ export const Navbar = () => {
 
 
   return (
-    <header className="navbar-header px-2" style={{
+    <header className="navbar-header" style={{
       background: 'rgba(255, 255, 255, 0.85)',
       backdropFilter: 'blur(10px)',
       boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
@@ -159,7 +159,7 @@ export const Navbar = () => {
               ))}
             </ul>
     
-            <div>
+            <div style={{marginRight:'1rem'}}>
               {isLoggedIn ? (
                 <Dropdown>
                   <Dropdown.Toggle 

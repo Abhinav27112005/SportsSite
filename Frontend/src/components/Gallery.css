@@ -20,19 +20,26 @@
   margin-bottom: 3rem;
   font-size: 1.1rem;
 }
-.gallery-section .imgBody{
-   height:65vh;
-  width:100%;
-  overflow:hidden;
-  background-color:black;
-  margin:0rem;
-  position:relative;
-
-
+.gallery-section .imgBody {
+    height: 65vh;
+    width: 100%;
+    overflow: hidden;
+    background: #f5f5f5 url('data:image/svg+xml;utf8,<svg opacity="0.02" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><rect width="100" height="100" fill="none"/><path d="M0 0 L100 100 M100 0 L0 100" stroke="black" stroke-width="0.5"/></svg>');
+    margin: 0rem;
+    position: relative;
+    /* background: #2c3e50; */
+    box-shadow: 6px 2px 2px 2px #F5F5BD;
+}
+#image-track {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none; /* Hide scrollbar for Firefox */
+    -ms-overflow-style: none; /* Hide scrollbar for IE and Edge */
 }
 #image-track > .image{
     width:74vmin;
-    height:100vmin;
+    height:100%;
     object-fit:cover;
     object-position: 100% center;
   will-change: transform, object-position;

@@ -8,7 +8,7 @@ export const Gallery = () => {
     const trackRef = useRef(null);
     const isDraggingRef = useRef(false);
     const lastTimeRef = useRef(0);
-
+    const containerRef=useRef(null);
 
     const images = [
         { src: 'assets/images/gallery1.jpeg', alt: 'Established' },
@@ -97,20 +97,23 @@ export const Gallery = () => {
 
     // Event listeners
     useEffect(() => {
-        window.addEventListener("mousedown", handleMouseDown);
-        window.addEventListener("mousemove", handleMouseMove);
-        window.addEventListener("mouseup", handleMouseUp);
-        window.addEventListener("touchstart", handleTouchStart);
-        window.addEventListener("touchmove", handleTouchMove);
-        window.addEventListener("touchend", handleTouchEnd);
+        const container = containerRef.current;
+        if (!container) return;
+
+        container.addEventListener("mousedown", handleMouseDown);
+        container.addEventListener("mousemove", handleMouseMove);
+        container.addEventListener("mouseup", handleMouseUp);
+        container.addEventListener("touchstart", handleTouchStart);
+        container.addEventListener("touchmove", handleTouchMove);
+        container.addEventListener("touchend", handleTouchEnd);
 
         return () => {
-            window.removeEventListener("mousedown", handleMouseDown);
-            window.removeEventListener("mousemove", handleMouseMove);
-            window.removeEventListener("mouseup", handleMouseUp);
-            window.removeEventListener("touchstart", handleTouchStart);
-            window.removeEventListener("touchmove", handleTouchMove);
-            window.removeEventListener("touchend", handleTouchEnd);
+            container.removeEventListener("mousedown", handleMouseDown);
+            container.removeEventListener("mousemove", handleMouseMove);
+            container.removeEventListener("mouseup", handleMouseUp);
+            container.removeEventListener("touchstart", handleTouchStart);
+            container.removeEventListener("touchmove", handleTouchMove);
+            container.removeEventListener("touchend", handleTouchEnd);
         };
     }, [handleMouseDown, handleMouseMove, handleMouseUp, handleTouchStart, handleTouchMove, handleTouchEnd]);
 
@@ -121,7 +124,7 @@ export const Gallery = () => {
                 <p className="section-subtitle text-center text-xl mb-10 text-gray-700 font-medium italic">
                     Moments that define our legacy
                 </p>
-                <div className="imgBody">
+                <div className="imgBody" ref={containerRef}>
                     <div id="image-track" ref={trackRef}>
                         {images.map((image, index) => (
                             <img
