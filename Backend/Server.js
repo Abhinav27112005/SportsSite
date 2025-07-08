@@ -25,12 +25,20 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const corsOptions = {
-  origin: [process.env.FRONTEND_URL, 'http://localhost:5173', 'http://localhost:3000'].filter(Boolean),
+  origin: [
+    'https://sportclubs.netlify.app', // Your Netlify frontend
+    'https://sportssite.onrender.com', // Your Render backend
+    'http://localhost:5173', 
+    'http://localhost:3000',
+    process.env.FRONTEND_URL // Keep this for flexibility
+  ].filter(Boolean),
   credentials: true,
-  optionsSuccessStatus: 200
+  optionsSuccessStatus: 200,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // Explicit methods
+  allowedHeaders: ['Content-Type', 'Authorization'] // Required headers
 };
 // Middleware
-
+app.options('*', cors(corsOptions));
 app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
