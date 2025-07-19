@@ -11,12 +11,8 @@ import Register from './pages/auth/Register';
 import Signup from './pages/auth/Signup';
 import AuthChecker from './context/AuthChecker';
 import Profile from './components/common/Profile';
-import "bootstrap-icons/font/bootstrap-icons.css";
 import AdminPanel from './components/features/admin/AdminPanel';
 import AdmissionForm from './pages/public/AdmissionForm';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import 'bootstrap/dist/js/bootstrap.bundle.min';
-import './styles/App.css';
 
 function AppContent() {
   const location = useLocation();

@@ -170,3 +170,76 @@ footer a:hover {
     margin-bottom: 30px;
     color: #2c3e50;
   }
+
+body, .home-bg {
+  background: linear-gradient(135deg, #f5f8fa 0%, #e3eaf7 100%);
+  min-height: 100vh;
+}
+
+section, .home-section {
+  padding: 18px 0 12px 0;
+  margin-bottom: 8px;
+}
+
+.hero-section {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  background: linear-gradient(120deg, #f5f8fa 60%, #e3eaf7 100%);
+}
+
+#gallery-section, #about-section, #contact-section {
+  background: transparent;
+}
+
+/* Glowing effect for headings */
+h1, h2, h3, .glow-heading {
+  color: #2a3a4d;
+  font-weight: 800;
+  text-shadow:
+    0 2px 8px #b3c6e7,
+    0 0px 16px #e3eaf7,
+    0 0px 2px #3a6ea5;
+  letter-spacing: 0.03em;
+}
+
+/* Testimonials Section */
+.testimonial-card {
+  background: rgba(255, 255, 255, 0.82);
+  border-radius: 1.5rem;
+  box-shadow: 0 4px 32px rgba(58, 110, 165, 0.10), 0 1.5px 8px #dde6ed;
+  border: 1.5px solid #e3eaf7;
+  transition: transform 0.18s, box-shadow 0.18s;
+  min-height: 340px;
+  max-width: 420px;
+  margin: 0 auto;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+.testimonial-card:hover {
+  transform: translateY(-6px) scale(1.025);
+  box-shadow: 0 8px 40px rgba(58, 110, 165, 0.16), 0 2px 12px #dde6ed;
+}
+.testimonial-card .rounded-circle {
+  border: 3px solid #e3eaf7;
+  box-shadow: 0 2px 12px #dde6ed;
+}
+.testimonial-card h5 {
+  color: #1a2a4d;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+}
+.testimonial-card .text-primary {
+  color: #3a6ea5 !important;
+}
+.testimonial-card p {
+  font-size: 1.08rem;
+  color: #3a6ea5;
+  margin-top: 0.5rem;
+}
+
+@media (max-width: 767px) {
+  .testimonial-card {
+    min-height: 280px;
+    padding: 1.2rem 0.7rem;
+  }
+}

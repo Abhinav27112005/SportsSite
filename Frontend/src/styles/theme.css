@@ -1,0 +1,19 @@
+:root {
+  --color-primary: #3a6ea5;
+  --color-secondary: #e3eaf7;
+  --color-accent: #f7b801;
+  --color-bg: #f9fafb;
+  --color-text: #22223b;
+  --color-muted: #a0aec0;
+  --color-navbar: rgba(245, 248, 250, 0.85); /* glassy blue-gray */
+  --color-navbar-border: #dde6ed;
+  --color-navbar-text: #1a2a4d;
+  --color-navbar-shadow: 0 2px 8px rgba(58, 110, 165, 0.12);
+  --color-glass-bg: rgba(255, 255, 255, 0.65);
+  --color-glass-blur: 24px;
+  --color-logo-shadow: #3a6ea5cc;
+  --color-animated-border: #f7b801;
+  --font-family: 'Poppins', 'Inter', 'Segoe UI', Arial, sans-serif;
+  --border-radius: 16px;
+  --transition: 0.2s all;
+} 

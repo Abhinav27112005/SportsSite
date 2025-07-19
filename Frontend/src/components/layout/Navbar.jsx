@@ -1,77 +1,19 @@
-import { NavLink, useNavigate,useLocation } from "react-router-dom";
-import { useState, useEffect } from "react";
-import { RxHamburgerMenu } from "react-icons/rx";
-import { Button, Dropdown } from "react-bootstrap";
-import '../../styles/Navbar.css';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import { verifySession } from "../../services/api/client";
-import { useCallback } from "react";
+import React, { useState } from 'react';
+import AppBar from '@mui/material/AppBar';
+import Box from '@mui/material/Box';
+import Toolbar from '@mui/material/Toolbar';
+import IconButton from '@mui/material/IconButton';
+import Typography from '@mui/material/Typography';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import Button from '@mui/material/Button';
+import MenuIcon from '@mui/icons-material/Menu';
+import CloseIcon from '@mui/icons-material/Close';
+import AccountCircle from '@mui/icons-material/AccountCircle';
+import { NavLink, useNavigate, useLocation } from 'react-router-dom';
+import { styled } from '@mui/material/styles';
+import { motion, useCycle } from 'framer-motion';
 
-export const Navbar = () => {
-  const [menuOpen, setMenuOpen] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const navigate = useNavigate();
-  const location=useLocation();
-  
-  const checkAuthStatus = useCallback(async () => {
-    const token = localStorage.getItem('authToken');
-    if (!token) {
-      setIsLoggedIn(false);
-      return false;
-    }
-    
-    try {
-      const isValid = await verifySession();
-      setIsLoggedIn(isValid);
-      return isValid;
-    } catch (error) {
-      console.error("Auth check failed:", error);
-      setIsLoggedIn(false);
-      return false;
-    }
-  }, []);
-  // Then useEffect can safely depend on checkAuthStatus
-  useEffect(() => {
-    checkAuthStatus();
-    const interval = setInterval(checkAuthStatus, 5 * 60 * 1000);
-    const handleFocus = () => checkAuthStatus();
-    window.addEventListener('focus', handleFocus);
-
-    return () => {
-      clearInterval(interval);
-      window.removeEventListener('focus', handleFocus);
-    };
-  }, [checkAuthStatus]); // Now depends on the memoized function
-
-
-  const toggleMenu = () => setMenuOpen(!menuOpen);
-
-  const handleLogout = () => {
-    localStorage.removeItem('isLoggedIn');
-    localStorage.removeItem('authToken');
-    setIsLoggedIn(false);
-    navigate('/login');
-    setMenuOpen(false);
-  };
-  const scrollToSection=(sectionId)=>{
-    if(location.pathname==='/'){
-      const section = document.getElementById(sectionId);
-      if (section) {
-        window.location.hash = sectionId;
-        section.scrollIntoView({ behavior: 'smooth' });
-      }
-    }else{
-      navigate(`/#${sectionId}`);
-      //navigate('/');
-      //setTimeout(() => {
-       // const section = document.getElementById(sectionId);
-        //if (section) {
-          //section.scrollIntoView({ behavior: 'smooth' });
-        //}
-      //}, 500); // Delay to ensure navigation is complete
-    }
-    setMenuOpen(false);
-  }
   const navItems = [
     { path: '/', label: 'Home' },
     { path: '/members', label: 'Members' },
@@ -80,253 +22,237 @@ export const Navbar = () => {
     { path: '/finances', label: 'Finances' },
     { path: '/attendance', label: 'Attendance' },
     { path: '/admission', label: 'Admission' },
-    { path: 'scrollToGallery', label: 'Gallery', sectionId: 'gallery-section' },
-    { path: 'scrollToContact', label: 'Contact', sectionId: 'contact-section' },
-    { path: 'scrollToAbout', label: 'About Us', sectionId: 'about-section' } // Changed to use scroll functionality
-  ];
+];
 
+const GlassAppBar = styled(motion(AppBar))(({ theme }) => ({
+  background: 'rgba(245, 248, 250, 0.85)',
+  backdropFilter: 'blur(24px)',
+  WebkitBackdropFilter: 'blur(24px)',
+  boxShadow: '0 2px 8px rgba(58, 110, 165, 0.12)',
+  borderBottom: '1px solid #dde6ed',
+  padding: '0.7rem 0',
+  position: 'sticky',
+  top: 0,
+  zIndex: 1000,
+}));
 
+const Logo = styled(motion.img)({
+  height: 64,
+  width: 64,
+  borderRadius: '50%',
+  objectFit: 'cover',
+  marginRight: 18,
+  background: '#fff',
+  boxShadow: '0 4px 24px var(--color-logo-shadow)',
+  cursor: 'pointer',
+  border: '2.5px solid #f7b801',
+});
+
+const StyledNavLink = styled(NavLink)(({ theme }) => ({
+  color: 'var(--color-navbar-text)',
+  fontWeight: 700,
+  fontSize: '1.08rem',
+  textDecoration: 'none',
+  padding: '10px 20px',
+  borderRadius: 12,
+  margin: '0 2px',
+  letterSpacing: 0.2,
+  transition: 'background 0.18s, color 0.18s',
+  '&.active, &:hover': {
+    background: '#e3eaf7',
+    color: '#3a6ea5',
+  },
+}));
+
+export function Navbar() {
+  const [mobileMenuAnchor, setMobileMenuAnchor] = useState(null);
+  const [accountMenuAnchor, setAccountMenuAnchor] = useState(null);
+  const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem('authToken'));
+  const [logoLoaded, setLogoLoaded] = useState(false);
+  const [isMenuOpen, toggleMenuOpen] = useCycle(false, true);
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const handleMobileMenuOpen = (event) => {
+    setMobileMenuAnchor(event.currentTarget);
+    toggleMenuOpen(1);
+  };
+  const handleMobileMenuClose = () => {
+    setMobileMenuAnchor(null);
+    toggleMenuOpen(0);
+  };
+  const handleAccountMenuOpen = (event) => {
+    setAccountMenuAnchor(event.currentTarget);
+  };
+  const handleAccountMenuClose = () => {
+    setAccountMenuAnchor(null);
+  };
+  const handleLogout = () => {
+    localStorage.removeItem('authToken');
+    setIsLoggedIn(false);
+    handleAccountMenuClose();
+    navigate('/login');
+  };
+
+  // Animated border effect
+  const borderVariants = {
+    animate: {
+      boxShadow: [
+        '0 0 0 0px var(--color-animated-border)',
+        '0 0 0 4px var(--color-animated-border)',
+        '0 0 0 0px var(--color-animated-border)'
+      ],
+      transition: {
+        duration: 3,
+        repeat: Infinity,
+        ease: 'easeInOut',
+      },
+    },
+  };
+
+  // Logo infinite floating/tilt
+  const logoVariants = {
+    initial: { scale: 1.5, rotate: -10, opacity: 0 },
+    animate: {
+      scale: 1,
+      rotate: [0, 8, -8, 0],
+      opacity: 1,
+      boxShadow: '0 8px 32px var(--color-logo-shadow)',
+      transition: {
+        scale: { duration: 1.1, type: 'spring', bounce: 0.4 },
+        rotate: { duration: 3, repeat: Infinity, ease: 'easeInOut' },
+        opacity: { duration: 1.1 },
+      },
+    },
+    whileHover: { scale: 1.08, rotate: 2 },
+    whileTap: { scale: 0.95, rotate: 0 },
+  };
 
   return (
-    <header className="navbar-header" style={{
-      background: 'rgba(255, 255, 255, 0.85)',
-      backdropFilter: 'blur(10px)',
-      boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
-      borderBottom: '1px solid rgba(0,0,0,0.08)',
-    }}>
-      <div className="container">
-        <div className="d-flex justify-content-between align-items-center py-3 text-black">
-          {/* Logo Section - Enhanced */}
-          <div className="d-flex align-items-center ">
-            <div className="me-3">
-              <img 
-                src="assets/Picture2.jpeg" 
+    <GlassAppBar
+      position="sticky"
+      elevation={0}
+      sx={{ px: { xs: 0, sm: 0, md: 0 } }}
+      variants={borderVariants}
+      animate="animate"
+    >
+      <Toolbar sx={{ minHeight: 90, px: { xs: 2, sm: 4, md: 6 } }}>
+        {/* Logo and Title */}
+        <Box sx={{ display: 'flex', alignItems: 'center', flexGrow: { xs: 1, md: 0 } }}>
+          <Logo
+            src="/assets/Picture2.jpeg"
                 alt="logo" 
-                style={{ 
-                  height: '65px',
-                  transition: 'transform 0.3s ease',
-                  cursor: 'pointer',
-                  borderRadius: '50%',
-                  boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
-                  objectFit: 'cover'
-                }}
+            variants={logoVariants}
+            initial="initial"
+            animate="animate"
+            whileHover="whileHover"
+            whileTap="whileTap"
+            onLoad={() => setLogoLoaded(true)}
+            style={{ boxShadow: logoLoaded ? '0 8px 32px var(--color-logo-shadow)' : 'none' }}
                 onClick={() => navigate('/')}
-                onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.05)'}
-                onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}
-              />
-            </div>
-            <h1 className="mb-0 fs-3 fw-bold" style={{
-              color: '#2c3e50',
-              textShadow: '1px 1px 2px rgba(0,0,0,0.1)'
-            }}>
+          />
+          <motion.div
+            initial={{ scale: 1.3, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ delay: 0.2, duration: 1, type: 'spring', bounce: 0.3 }}
+            style={{ display: 'flex', alignItems: 'center' }}
+          >
+            <Typography
+              variant="h4"
+              component="span"
+              sx={{
+                fontWeight: 900,
+                fontFamily: 'Poppins, Inter, Segoe UI, Arial, sans-serif',
+                fontSize: { xs: '1.45rem', sm: '2rem' },
+                color: '#1a2a4d',
+                letterSpacing: 0.7,
+                textShadow: '0 2px 8px #dde6ed',
+                ml: 0.5,
+                  }}
+                >
               Sports Club
-            </h1>
-          </div>
-    
-          <nav className="d-none d-md-flex align-items-center">
-            <ul className="nav mb-0 ">
-              {navItems.map(({ path, label, sectionId }) => (
-                <li className="nav-item mx-2" key={label}>
-                  {sectionId ? (
-                    /*<button
-                    onClick={() => scrollToSection(sectionId)}
-                    className={`nav-link px-3 py-2 rounded text-dark fw-medium bg-transparent border-0 ${
-                      location.pathname === '/' && 
-                      window.location.hash === `#${sectionId}` ? 'active-nav' : ''
-                    }`}
-                    style={{ fontSize: '1.05rem', cursor: 'pointer' }}
-                  >
-                    {label}
-                  </button>*/ null
-                  ) : (
-                    <NavLink
-                      to={path}
-                      className="nav-link fw-medium px-3 py-2 rounded fw-bold text-#f2f2"
-                      style={({ isActive }) => isActive ? {
-                        fontSize: '1.1rem',
-                        transition: 'all 0.3s ease',
-                        backgroundColor: 'rgba(13, 110, 253, 0.1)',
-                        color: '#0d6efd'
-                      } : {
-                        fontSize: '1.1rem',
-                        transition: 'all 0.3s ease'
-                      }}
-                    >
-                      {path === '/' ? 'Home' : path.slice(1).charAt(0).toUpperCase() + path.slice(2)}
-                    </NavLink>
-                  )}
-                </li>
-              ))}
-            </ul>
-    
-            <div style={{marginRight:'1rem'}}>
+            </Typography>
+          </motion.div>
+        </Box>
+        {/* Desktop Nav Links */}
+        <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, justifyContent: 'center', alignItems: 'center' }}>
+          {navItems.map(({ path, label }) => (
+            <StyledNavLink key={label} to={path} end={path === '/'}>
+              {label}
+            </StyledNavLink>
+          ))}
+        </Box>
+        {/* Desktop Account/Login */}
+        <Box sx={{ display: { xs: 'none', md: 'flex' }, alignItems: 'center', gap: 1 }}>
               {isLoggedIn ? (
-                <Dropdown>
-                  <Dropdown.Toggle 
-                    variant="outline-primary" 
-                    id="dropdown-basic"
-                    style={{
-                      fontSize: '1.1rem',
-                      padding: '0.5rem 1.25rem',
-                      borderRadius: '8px'
-                    }}
-                    className="fw-bold"
-                  >
-                    <i className="bi bi-person-circle me-2"></i>
-                    Account
-                  </Dropdown.Toggle>
-                  <Dropdown.Menu className="shadow-sm border-0">
-                    <Dropdown.Item 
-                      onClick={() => navigate('/profile')}
-                      className="py-2 fw-bold"
-                    >
-                      <i className="bi bi-person me-2"></i>
-                      Profile
-                    </Dropdown.Item>
-                    <Dropdown.Item 
-                      onClick={handleLogout}
-                      className="py-2 text-danger fw-bold"
-                    >
-                      <i className="bi bi-box-arrow-right me-2"></i>
-                      Logout
-                    </Dropdown.Item>
-                  </Dropdown.Menu>
-                </Dropdown>
+            [
+              <IconButton color="primary" onClick={handleAccountMenuOpen} size="large" key="account-btn">
+                <AccountCircle fontSize="large" />
+              </IconButton>,
+              <Menu
+                anchorEl={accountMenuAnchor}
+                open={Boolean(accountMenuAnchor)}
+                onClose={handleAccountMenuClose}
+                anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+                transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+                key="account-menu"
+              >
+                {[<MenuItem key="profile" onClick={() => { handleAccountMenuClose(); navigate('/profile'); }}>Profile</MenuItem>,
+                  <MenuItem key="logout" onClick={handleLogout}>Logout</MenuItem>]
+                }
+              </Menu>
+            ]
               ) : (
-                <Button 
-                  variant="primary"
-                  onClick={() => navigate('/login')}
-                  className="py-2 fw-bold text-#f2f2"
-                  style={{
-                    fontSize: '1.1rem',
-                    borderRadius: '8px',
-                    boxShadow: '0 2px 8px rgba(13, 110, 253, 0.25)',
-                    marginLeft:'1rem'
-                  }}
-                >
-                  <i className="bi bi-box-arrow-in-right me-2"></i>
+            <Button variant="contained" color="primary" onClick={() => navigate('/login')} sx={{ borderRadius: 2, fontWeight: 700 }}>
                   Login
                 </Button>
               )}
-            </div>
-          </nav>
-    
-          {/* Mobile Menu Button - Enhanced */}
-          <div className="d-md-none">
-            <button 
-              onClick={toggleMenu} 
-              className="btn btn-outline-secondary p-2 "
-              style={{
-                fontSize: '1.1rem',
-                borderRadius: '8px',
-                width: '44px',
-                height: '44px'
-              }}
-              aria-label="Toggle Menu"
-            >
-              <RxHamburgerMenu size={24} />
-            </button>
-          </div>
-        </div>
-
-        {menuOpen && (
-          <div className="d-md-none mt-3 p-4 bg-white rounded shadow-lg" style={{
-            border: '1px solid rgba(0,0,0,0.1)',
-            animation: 'fadeIn 0.3s ease-out'
-          }}>
-            <ul className="nav flex-column gap-2">
-              {['/', '/members', '/events', '/coaching', '/finances', '/attendance'].map((path) => (
-                <li className="nav-item" key={path}>
-                  <NavLink 
-                    to={path} 
-                    className="nav-link px-3 py-2 rounded fw-medium"
-                    style={({ isActive }) => isActive ? {
-                      fontSize: '1.1rem',
-                      backgroundColor: 'rgba(13, 110, 253, 0.1)',
-                      color: '#0d6efd'
-                    } : {
-                      fontSize: '1.1rem'
-                    }}
-                    onClick={() => setMenuOpen(false)}
-                  >
-                    {path === '/' ? 'Home' : path.slice(1).charAt(0).toUpperCase() + path.slice(2)}
-                  </NavLink>
-                </li>
-              ))}
-            </ul>
-    
-            <div className="d-grid gap-3 mt-4">
-              {isLoggedIn ? (
-                <>
-                  <Button 
-                    variant="outline-primary"
-                    onClick={() => {
-                      navigate('/profile');
-                      setMenuOpen(false);
-                    }}
-                    className="py-2"
-                    style={{ fontSize: '1.1rem' }}
-                  >
-                    <i className="bi bi-person me-2"></i>
-                    Profile
-                  </Button>
-                  <Button 
-                    variant="danger"
-                    onClick={handleLogout}
-                    className="py-2"
-                    style={{ fontSize: '1.1rem' }}
-                  >
-                    <i className="bi bi-box-arrow-right me-2"></i>
-                    Logout
-                  </Button>
-                </>
-              ) : (
-                <Button 
-                  variant="primary"
-                  onClick={() => {
-                    navigate('/login');
-                    setMenuOpen(false);
-                  }}
-                  className="py-2"
-                  style={{ fontSize: '1.1rem' }}
-                >
-                  <i className="bi bi-box-arrow-in-right me-2"></i>
-                  Login
-                </Button>
-              )}
-            </div>
-          </div>
-        )}
-      </div>
-      {/* Secondary Navbar */}
-      <div className="secondary-navbar py-0 border-bottom-0 px-0" style={{
-        background: 'rgba(255, 255, 255, 0.95)',
-        backdropFilter: 'blur(10px)',
-        position: 'sticky',
-        top: '80px', // Adjust based on your main navbar height
-        zIndex: 990
-      }}>
-        <div className="container">
-          <div className="d-flex justify-content-center">
-            {navItems.map(({path,label,sectionId}) => {
-                const isActive=location.pathname==='/' && window.location.hash===`#${sectionId}`;
-              return (
-                sectionId ? ( 
-                    <button
+        </Box>
+        {/* Mobile Hamburger/X */}
+        <Box sx={{ display: { xs: 'flex', md: 'none' }, ml: 1 }}>
+          <IconButton color="primary" edge="end" onClick={mobileMenuAnchor ? handleMobileMenuClose : handleMobileMenuOpen}>
+            {mobileMenuAnchor ? <CloseIcon fontSize="large" /> : <MenuIcon fontSize="large" />}
+          </IconButton>
+        </Box>
+        {/* Mobile Drawer Menu */}
+        <Menu
+          anchorEl={mobileMenuAnchor}
+          open={Boolean(mobileMenuAnchor)}
+          onClose={handleMobileMenuClose}
+          anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+          transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+          PaperProps={{
+            sx: {
+              background: 'rgba(255,255,255,0.98)',
+              color: '#1a2a4d',
+              backdropFilter: 'blur(24px)',
+              minWidth: 220,
+              borderRadius: 2,
+              boxShadow: '0 4px 24px rgba(58, 110, 165, 0.10)',
+              mt: 1.5,
+            },
+          }}
+        >
+          {navItems.map(({ path, label }) => (
+            <MenuItem
             key={label}
-            onClick={() => scrollToSection(sectionId)}
-            className={`secondary-nav-item ${isActive ? 'active' : ''}`}
+              onClick={() => { handleMobileMenuClose(); navigate(path); }}
+              selected={location.pathname === path}
+              sx={{ fontWeight: location.pathname === path ? 800 : 600 }}
           >
             {label}
-            {isActive && <div className="active-indicator"></div>}
-          </button>) 
-                    :
-                    null
-              );
-            })}
-          </div>
-        </div>
-      </div>
-    </header>
+            </MenuItem>
+          ))}
+          <MenuItem divider sx={{ my: 1 }} />
+          {isLoggedIn
+            ? [
+                <MenuItem key="profile-mobile" onClick={() => { handleMobileMenuClose(); navigate('/profile'); }}>Profile</MenuItem>,
+                <MenuItem key="logout-mobile" onClick={() => { handleMobileMenuClose(); handleLogout(); }}>Logout</MenuItem>
+              ]
+            : <MenuItem onClick={() => { handleMobileMenuClose(); navigate('/login'); }}>Login</MenuItem>
+          }
+        </Menu>
+      </Toolbar>
+    </GlassAppBar>
   );
-};
+}
