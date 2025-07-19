@@ -3,8 +3,8 @@ import { useNavigate } from "react-router-dom";
 import "swiper/css";
 import "swiper/css/autoplay";
 import { Autoplay } from "swiper/modules";
-import "./ImageSlider.css";
-import AdmissionForm from '../pages/AdmissionForm'
+import "../../../styles/ImageSlider.css";
+import AdmissionForm from '../../../pages/public/AdmissionForm'
 
 export const ImageSlider = () => {
   const navigate=useNavigate();

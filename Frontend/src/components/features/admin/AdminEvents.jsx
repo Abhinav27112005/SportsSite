@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Table, Button, Alert, Modal, Form } from 'react-bootstrap';
-import apiFetch from './api';
-import './AdminEvents.css';
+import apiFetch from '../../../services/api/client';
+import '../../../styles/AdminEvents.css';
 
 const AdminEvents = () => {
   const [events, setEvents] = useState([]);

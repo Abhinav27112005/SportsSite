@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import './AdmissionForm.css';
-import { admissionAPI } from '../components/api';
+import '../../styles/AdmissionForm.css';
+import { admissionAPI } from '../../services/api/client';
 
 function AdmissionForm() {
   const [formData, setFormData] = useState({

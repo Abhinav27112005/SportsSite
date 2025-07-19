@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaCalendarAlt } from "react-icons/fa";
-import "./Events.css";
+import "../../styles/Events.css";
 
 export const Events = () => {
   const [events, setEvents] = useState([]);

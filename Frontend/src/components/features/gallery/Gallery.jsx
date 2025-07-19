@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
-import './Gallery.css';
+import '../../../styles/Gallery.css';
 
 export const Gallery = () => {
     const [mouseDownAt, setMouseDownAt] = useState(0);

@@ -1,5 +1,5 @@
 import React from "react";
-import "./Finances.css";
+import "../../styles/Finances.css";
 import { FaArrowUp, FaArrowDown } from "react-icons/fa";
 
 export const Finances = () => {

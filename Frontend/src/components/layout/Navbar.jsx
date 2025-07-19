@@ -2,9 +2,9 @@ import { NavLink, useNavigate,useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { RxHamburgerMenu } from "react-icons/rx";
 import { Button, Dropdown } from "react-bootstrap";
-import './Navbar.css';
+import '../../styles/Navbar.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { verifySession } from "./api";
+import { verifySession } from "../../services/api/client";
 import { useCallback } from "react";
 
 export const Navbar = () => {

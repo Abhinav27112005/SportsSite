@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Table, Button, Spinner, Alert, Modal } from 'react-bootstrap';
-import { admissionAPI } from './api'; 
+import { admissionAPI } from '../../../services/api/client'; 
 const AdminAdmissions = () => {
   const [admissions, setAdmissions] = useState([]);
   const [loading, setLoading] = useState(true);

@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useState } from 'react';
-import { verifySession } from '../components/api';
+import { verifySession } from '../services/api/client';
 
 const AuthContext = createContext();
 

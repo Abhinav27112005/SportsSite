@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Tab, Tabs, Button, Container, Spinner, Alert } from 'react-bootstrap';
 import AdminContacts from './AdminContacts';
 import AdminEvents from './AdminEvents';
-import apiFetch from './api';
+import apiFetch from '../../../services/api/client';
 import AdminAdmissions from './AdminAdmission';
 
 const AdminPanel = () => {

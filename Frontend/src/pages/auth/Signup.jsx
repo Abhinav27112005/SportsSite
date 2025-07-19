@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
-import "./Signup.css";
+import "../../styles/Signup.css";
 import Validate from "./SignupValidation";
 
 const Signup = () => {

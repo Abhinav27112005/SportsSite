@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Table, Button, Alert } from 'react-bootstrap';
-import apiFetch from './api';
+import apiFetch from '../../../services/api/client';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const AdminContacts = () => {

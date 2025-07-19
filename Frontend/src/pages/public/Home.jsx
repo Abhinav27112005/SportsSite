@@ -1,11 +1,11 @@
 import React from "react";
 import {useEffect} from "react";
-import { ImageSlider } from "../components/ImageSlider";
-import { Gallery } from "../components/Gallery";
-import { AboutUs } from "../components/AboutUS";
-import { ContactForm } from "../components/ContactForm";
+import { ImageSlider } from "../../components/features/gallery/ImageSlider";
+import { Gallery } from "../../components/features/gallery/Gallery";
+import { AboutUs } from "../../components/common/AboutUS";
+import { ContactForm } from "../../components/forms/ContactForm";
 import "bootstrap-icons/font/bootstrap-icons.css";
-import "./Home.css";
+import "../../styles/Home.css";
 
 export const Home = () => {
 

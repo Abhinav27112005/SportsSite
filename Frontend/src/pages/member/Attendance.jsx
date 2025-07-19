@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import "./Attendance.css";
+import "../../styles/Attendance.css";
 
 export const Attendance = () => {
   const [memberID, setMemberID] = useState("");

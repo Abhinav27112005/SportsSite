@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
-import "./Login.css";
+import "../../styles/Login.css";
 import * as jwt_decode from 'jwt-decode';
 import validate from "./Loginvalidation";
-import { refreshAuthToken } from "../components/api";
-import { useAuth } from "../Wrapper/AuthContext";
+import { refreshAuthToken } from "../../services/api/client";
+import { useAuth } from "../../context/AuthContext";
 const Login = () => {
   const [formData, setFormData] = useState({
     email: "",

@@ -1,5 +1,5 @@
 import React from "react";
-import "./Coaching.css";
+import "../../styles/Coaching.css";
 import { FaCheckCircle } from "react-icons/fa";
 
 export const Coaching = () => {

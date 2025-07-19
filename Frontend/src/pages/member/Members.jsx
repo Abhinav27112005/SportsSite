@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './Members.css';
+import '../../styles/Members.css';
 
 export const Members = () => {
   const [members, setMembers] = useState([

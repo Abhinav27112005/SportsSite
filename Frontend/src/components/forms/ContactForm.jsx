@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './ContactForm.css';
+import '../../styles/ContactForm.css';
 import "bootstrap/dist/css/bootstrap.min.css";
 import Validate from './ValidationContact';
 export const ContactForm = () => {

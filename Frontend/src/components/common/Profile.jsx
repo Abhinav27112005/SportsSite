@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import './Profile.css';
+import '../../styles/Profile.css';
 import "bootstrap-icons/font/bootstrap-icons.css";
-import  apiFetch  from './api';
+import  apiFetch  from '../../services/api/client';
 import { Button } from 'react-bootstrap';
 const Profile = () => {
   const [userData, setUserData] = useState(null);
