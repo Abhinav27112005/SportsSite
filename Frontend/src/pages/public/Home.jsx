@@ -45,8 +45,8 @@ export const Home = () => {
         setTimeout(() => {
           element.scrollIntoView({ behavior: 'smooth' });
         }, 100);
-      }
-    }
+            }
+        }
   }, []);
 
   // Animation variants with staggered delays
@@ -70,7 +70,7 @@ export const Home = () => {
     whileInView: { opacity: 1, y: 0, transition: { duration: 0.6, ease: 'easeOut', delay: 0.46 } },
     viewport: { once: true, amount: 0.2 },
   };
-
+    
   return (
     <div className="d-flex flex-column min-vh-100 home-bg" style={{ scrollPaddingTop: '180px' }}>
       <main>
@@ -92,15 +92,15 @@ export const Home = () => {
           />
           {/* Hero content with fade-in-down */}
           <motion.div {...fadeInDown} style={{ position: 'relative', zIndex: 1 }}>
-            <div className="hero-content">
-              <ImageSlider />
-            </div>
+          <div className="hero-content">
+            <ImageSlider />
+          </div>
           </motion.div>
         </section>
 
         <section id="gallery-section">
           <motion.div {...fadeInRight}>
-            <Gallery />
+          <Gallery />
           </motion.div>
         </section>
 
@@ -117,13 +117,13 @@ export const Home = () => {
 
         <section id="about-section" className="scroll-target">
           <motion.div {...fadeInLeft}>
-            <AboutUs />
+          <AboutUs />
           </motion.div>
         </section>
 
         <section id="contact-section">
           <motion.div {...fadeInUp}>
-            <ContactForm />
+          <ContactForm />
           </motion.div>
         </section>
       </main>
@@ -134,9 +134,9 @@ export const Home = () => {
           <div className="row g-4">
             <div className="col-md-4">
               <h3 className="fw-bold mb-4">
-                <img
-                  src="assets/Picture2.jpeg"
-                  alt="Sports Club Logo"
+                <img 
+                  src="assets/Picture2.jpeg" 
+                  alt="Sports Club Logo" 
                   style={{ height: '50px', marginRight: '10px' }}
                 />
                 Sports Club
@@ -149,7 +149,7 @@ export const Home = () => {
             <div className="col-md-4">
               <h4 className="fw-bold mb-4">Quick Links</h4>
               <ul className="list-unstyled">
-                <li>
+                <li> 
                   <a href="/" className="text-decoration-none text-white hover-primary fs-5">
                     <i className="bi bi-house-door me-2"></i> Home
                   </a>
@@ -206,9 +206,9 @@ export const Home = () => {
                 <i className="bi bi-heart-fill"></i>
               </span>
               <span className="ms-2">by</span>
-              <a
-                href="https://abhinavjha.netlify.app/"
-                target="_blank"
+              <a 
+                href="https://abhinavjha.netlify.app/" 
+                target="_blank" 
                 rel="noopener noreferrer"
                 className="text-decoration-none text-primary ms-2 fw-bold hover-underline cursor-pointer"
               >
