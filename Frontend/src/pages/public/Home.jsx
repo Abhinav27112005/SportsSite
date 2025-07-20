@@ -206,13 +206,19 @@ export const Home = () => {
     }
   }, [currentSection, isScrolling, sections.length, navigateToSection]);
 
-  // Utility to detect mobile/touch device
-  const isMobile = () => typeof window !== 'undefined' && window.innerWidth <= 700;
+  // Utility to detect touch device (mobile/tablet)
+  const isTouchDevice = () => {
+    if (typeof window === 'undefined') return false;
+    return (
+      'ontouchstart' in window ||
+      (navigator && navigator.maxTouchPoints > 0)
+    );
+  };
 
   // Event listeners
   useEffect(() => {
-    if (isMobile()) {
-      // On mobile, do not attach any custom scroll handlers
+    if (isTouchDevice()) {
+      // On touch devices (mobile/tablet), do not attach any custom scroll handlers
       return;
     }
     const wheelHandler = (e) => handleWheel(e);
@@ -297,8 +303,8 @@ export const Home = () => {
           {/* Hero content with fade-in-down */}
           <motion.div {...fadeInDown} style={{ position: 'relative', zIndex: 1, width: '100%' }}>
             <div className="hero-content" style={{ minHeight: '60vh', width: '100%' }}>
-              <ImageSlider />
-            </div>
+            <ImageSlider />
+          </div>
           </motion.div>
         </section>
 
@@ -310,8 +316,8 @@ export const Home = () => {
         >
           <motion.div {...fadeInRight}>
             <div style={{ minHeight: '40vh', width: '100%' }}>
-              <Gallery />
-            </div>
+          <Gallery />
+        </div>
           </motion.div>
         </section>
 
@@ -329,8 +335,8 @@ export const Home = () => {
           >
             <div style={{ minHeight: '40vh', width: '100%' }}>
               <Testimonials testimonials={testimonials} />
-            </div>
-            
+        </div>
+
           </motion.div>
         </section>
 
@@ -353,7 +359,7 @@ export const Home = () => {
           style={{ width: '100%', maxWidth: '100vw', overflowX: 'hidden' }}
         >
           <motion.div {...fadeInUp}>
-            <ContactForm />
+          <ContactForm />
           </motion.div>
         </section>
 
@@ -364,93 +370,93 @@ export const Home = () => {
           className="mt-auto bg-dark text-white py-5" 
           style={{ width: '100%', maxWidth: '100vw' }}
         >
-          <div className="container">
-            <div className="row g-4">
-              <div className="col-md-4">
-                <h3 className="fw-bold mb-4">
-                  <img 
-                    src="assets/Picture2.jpeg" 
-                    alt="Sports Club Logo" 
-                    style={{ height: '50px', marginRight: '10px' }}
-                  />
-                  Sports Club
-                </h3>
-                <p className="text-white-0 fs-5">
-                  Founded in 1938, we've been nurturing badminton talent for over eight decades.
-                </p>
-              </div>
-
-              <div className="col-md-4">
-                <h4 className="fw-bold mb-4">Quick Links</h4>
-                <ul className="list-unstyled">
-                  <li> 
-                    <a href="/" className="text-decoration-none text-white hover-primary fs-5">
-                      <i className="bi bi-house-door me-2"></i> Home
-                    </a>
-                  </li>
-                  <li >
-                    <a href="/members" className="text-decoration-none text-white hover-primary fs-5">
-                      <i className="bi bi-people me-2"></i> Members
-                    </a>
-                  </li>
-                  <li >
-                    <a href="/events" className="text-decoration-none text-white hover-primary fs-5">
-                      <i className="bi bi-calendar-event me-2"></i> Events
-                    </a>
-                  </li>
-                  <li >
-                    <a href="/contact" className="text-decoration-none text-white hover-primary fs-5">
-                      <i className="bi bi-envelope me-2"></i> Contact Us
-                    </a>
-                  </li>
-                </ul>
-              </div>
-
-              <div className="col-md-4">
-                <h4 className="fw-bold mb-4">Connect With Us</h4>
-                <div className="d-flex gap-3 mb-4">
-                  <a href="#" className="text-white ">
-                    <i className="bi bi-facebook hover-scale"></i>
-                  </a>
-                  <a href="#" className="text-white ">
-                    <i className="bi bi-instagram hover-scale"></i>
-                  </a>
-                  <a href="#" className="text-white ">
-                    <i className="bi bi-twitter-x hover-scale"></i>
-                  </a>
-                  <a href="#" className="text-white ">
-                    <i className="bi bi-youtube hover-scale"></i>
-                  </a>
-                </div>
-                <div className="text-white-50">
-                  <i className="bi bi-geo-alt me-2"></i>
-                  Ranchi, Jharkhand, India
-                </div>
-              </div>
+        <div className="container">
+          <div className="row g-4">
+            <div className="col-md-4">
+              <h3 className="fw-bold mb-4">
+                <img 
+                  src="assets/Picture2.jpeg" 
+                  alt="Sports Club Logo" 
+                  style={{ height: '50px', marginRight: '10px' }}
+                />
+                Sports Club
+              </h3>
+              <p className="text-white-0 fs-5">
+                Founded in 1938, we've been nurturing badminton talent for over eight decades.
+              </p>
             </div>
 
-            <hr className="my-4 bg-secondary" />
-            <div className="d-flex flex-column flex-md-row justify-content-between align-items-center">
-              <div className="mb-3 mb-md-0">
-                &copy; {new Date().getFullYear()} Sports Club. All rights reserved.
-              </div>
-              <div className="d-flex align-items-center">
-                <span className="me-2">Made with</span>
-                <span className="heart-beat text-danger fs-1">
-                  <i className="bi bi-heart-fill"></i>
-                </span>
-                <span className="ms-2">by</span>
-                <a 
-                  href="https://abhinavjha.netlify.app/" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="text-decoration-none text-primary ms-2 fw-bold hover-underline cursor-pointer"
-                >
-                  Abhinav
+            <div className="col-md-4">
+              <h4 className="fw-bold mb-4">Quick Links</h4>
+              <ul className="list-unstyled">
+                <li> 
+                  <a href="/" className="text-decoration-none text-white hover-primary fs-5">
+                    <i className="bi bi-house-door me-2"></i> Home
+                  </a>
+                </li>
+                <li >
+                  <a href="/members" className="text-decoration-none text-white hover-primary fs-5">
+                    <i className="bi bi-people me-2"></i> Members
+                  </a>
+                </li>
+                <li >
+                  <a href="/events" className="text-decoration-none text-white hover-primary fs-5">
+                    <i className="bi bi-calendar-event me-2"></i> Events
+                  </a>
+                </li>
+                <li >
+                  <a href="/contact" className="text-decoration-none text-white hover-primary fs-5">
+                    <i className="bi bi-envelope me-2"></i> Contact Us
+                  </a>
+                </li>
+              </ul>
+            </div>
+
+            <div className="col-md-4">
+              <h4 className="fw-bold mb-4">Connect With Us</h4>
+              <div className="d-flex gap-3 mb-4">
+                <a href="#" className="text-white ">
+                  <i className="bi bi-facebook hover-scale"></i>
                 </a>
+                <a href="#" className="text-white ">
+                  <i className="bi bi-instagram hover-scale"></i>
+                </a>
+                <a href="#" className="text-white ">
+                  <i className="bi bi-twitter-x hover-scale"></i>
+                </a>
+                <a href="#" className="text-white ">
+                  <i className="bi bi-youtube hover-scale"></i>
+                </a>
+              </div>
+              <div className="text-white-50">
+                <i className="bi bi-geo-alt me-2"></i>
+                Ranchi, Jharkhand, India
               </div>
             </div>
           </div>
+
+          <hr className="my-4 bg-secondary" />
+          <div className="d-flex flex-column flex-md-row justify-content-between align-items-center">
+            <div className="mb-3 mb-md-0">
+              &copy; {new Date().getFullYear()} Sports Club. All rights reserved.
+            </div>
+            <div className="d-flex align-items-center">
+              <span className="me-2">Made with</span>
+              <span className="heart-beat text-danger fs-1">
+                <i className="bi bi-heart-fill"></i>
+              </span>
+              <span className="ms-2">by</span>
+              <a 
+                href="https://abhinavjha.netlify.app/" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="text-decoration-none text-primary ms-2 fw-bold hover-underline cursor-pointer"
+              >
+                Abhinav
+              </a>
+            </div>
+          </div>
+        </div>
         </section>
       </main>
       <FloatingSubmenu navigateToSection={navigateToSection} />

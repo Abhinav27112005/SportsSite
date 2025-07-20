@@ -229,7 +229,7 @@ export function Navbar() {
               minWidth: 220,
               borderRadius: 2,
               boxShadow: '0 4px 24px rgba(58, 110, 165, 0.10)',
-              mt: 1.5,
+              mt: { xs: '5rem', sm: '5rem', md: 1.5 }, // Responsive margin-top for mobile
             },
           }}
         >
