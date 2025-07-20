@@ -2,10 +2,19 @@
 .gallery-section {
   padding: 5rem 0rem;
   background: #f8f9fa;
+  min-height: 60vh;
+  position: relative;
+  width: 100%;
+  max-width: 100vw;
+  overflow: hidden;
+  display: block;
 }
 
 .gallery-container {
    padding: 0 1.5rem;
+   width: 100%;
+   max-width: 100vw;
+   overflow: hidden;
 }
 
 .section-title {
@@ -20,39 +29,43 @@
   margin-bottom: 3rem;
   font-size: 1.1rem;
 }
+
 .gallery-section .imgBody {
-    height: 65vh;
+    min-height: 40vh;
     width: 100%;
+    max-width: 100vw;
     overflow: hidden;
     background: #f5f5f5 url('data:image/svg+xml;utf8,<svg opacity="0.02" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><rect width="100" height="100" fill="none"/><path d="M0 0 L100 100 M100 0 L0 100" stroke="black" stroke-width="0.5"/></svg>');
     margin: 0rem;
     position: relative;
-    /* background: #2c3e50; */
     box-shadow: 6px 2px 2px 2px #F5F5BD;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
+
 #image-track {
     display: flex;
     overflow-x: auto;
     scroll-snap-type: x mandatory;
     scrollbar-width: none; /* Hide scrollbar for Firefox */
     -ms-overflow-style: none; /* Hide scrollbar for IE and Edge */
-}
-#image-track > .image{
-    width:74vmin;
-    height:100%;
-    object-fit:cover;
-    object-position: 100% center;
-  will-change: transform, object-position;
-  transition: object-position 0.3s ease-out;
+    position: static;
+    width: 100%;
+    max-width: 100vw;
+    gap: 4vmin;
+    touch-action: none; /* Prevent default touch behaviors */
+    will-change: transform;
 }
 
-#image-track{
-    display:flex;
-    gap:4vmin;
-    position:absolute;
-    left:50%;
-    top:50%;
-    transform:translate(0%,-50%);
+#image-track > .image {
+    width: 74vmin;
+    height: 100%;
+    object-fit: cover;
+    object-position: 100% center;
+    will-change: transform, object-position;
+    transition: object-position 0.3s ease-out;
+    flex-shrink: 0;
 }
 
 #image-track::before,
@@ -63,38 +76,9 @@
   flex-shrink: 0;
 }
 
-#image-track {
-    touch-action: none; /* Prevent default touch behaviors */
-}
 #image-track.dragging {
     cursor: grabbing; /* Change cursor when dragging */
 }
-/* #image-track {
-    transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-#image-track.dragging {
-    transition: none;
-}
-
-#image-track > .image {
-    transition: 
-        transform 0.5s cubic-bezier(0.16, 1, 0.3, 1),
-        object-position 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-#image-track.dragging > .image {
-    transition: none;
-} */
-
-#image-track {
-    will-change: transform;
-}
-
-#image-track > .image {
-    will-change: object-position;
-}
- 
 
 /* Better mobile responsiveness */
 @media (max-width: 768px) {
@@ -102,64 +86,12 @@
         width: 60vmin;
         height: 80vmin;
     }
-}
-/* @media screen and (max-width:1238px){
-    .gallery-section .imgBody{
-        width:95vw;
+    
+    .gallery-section {
+        padding: 3rem 0rem;
+    }
+    
+    .gallery-container {
+        padding: 0 1rem;
     }
 }
-@media screen and (max-width:1100px){
-    .gallery-section .imgBody{
-        width:94vw;
-    }
-}
-@media screen and (max-width:790px){
-    .gallery-section .imgBody{
-        width:92vw;
-    }
-}
-@media screen and (max-width:660px){
-.gallery-section .imgBody{
-    width:91vw;
-}
-}
-
-@media screen and (max-width:600px){
-.gallery-section .imgBody{
-    width:90vw;
-}
-}
-@media screen and (max-width:530px){
-.gallery-section .imgBody{
-    width:88vw;
-}
-}
-@media screen and (max-width:430px){
-.gallery-section .imgBody{
-    width:87vw;
-}
-}
-
-@media screen and (max-width:400px){
-.gallery-section .imgBody{
-    width:86vw;
-}
-}
-
-@media screen and (max-width:350px){
-.gallery-section .imgBody{
-    width:85vw;
-}
-}
-
-@media screen and (max-width:300px){
-.gallery-section .imgBody{
-    width:79vw;
-}
-}
-
-@media screen and (max-width:240px){
-.gallery-section .imgBody{
-    width:75vw;
-}
-} */

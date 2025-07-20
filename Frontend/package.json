@@ -18,6 +18,8 @@
     "bootstrap": "^5.3.6",
     "bootstrap-icons": "^1.13.1",
     "framer-motion": "^12.23.6",
+    "fullpage.js": "^4.0.37",
+    "gsap": "^3.13.0",
     "jwt-decode": "^4.0.0",
     "react": "^19.0.0",
     "react-bootstrap": "^2.10.10",
