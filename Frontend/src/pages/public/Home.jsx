@@ -311,7 +311,10 @@ export const Home = () => {
             whileInView={{ opacity: 1, y: 0, transition: { duration: 0.7, ease: 'easeOut' } }}
             viewport={{ once: true, amount: 0.2 }}
           >
-            <Testimonials testimonials={testimonials} />
+            <div style={{ minHeight: '40vh', width: '100%' }}>
+              <Testimonials testimonials={testimonials} />
+            </div>
+            
           </motion.div>
         </section>
 

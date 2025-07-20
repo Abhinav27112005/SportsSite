@@ -295,3 +295,27 @@ footer a:hover {
     max-width: 100%;
   }
 }
+
+/* Testimonials Section Styling */
+.testimonials-section {
+  background: #fdfdfd;
+  padding: 60px 20px;
+  border-top: 1px solid #ddd;
+}
+
+.testimonials-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.testimonial-card {
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(58, 110, 165, 0.12);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  margin: 0 auto;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
