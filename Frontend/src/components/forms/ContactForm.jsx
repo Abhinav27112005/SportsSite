@@ -63,7 +63,7 @@ const [message,setMessage]=useState("");
   return (
     <section className="contact-section">
       <div className="contact-container">
-        <h2 className="contact-title fw-bolder fs-1 text-primary ">📬 Contact Us</h2>
+        <h2 className="contact-title fw-bolder fs-2 text-primary" style={{ marginTop: 0, marginBottom: '1rem', fontSize: '2rem', lineHeight: 1.2 }}>📬 Contact Us</h2>
         {message && <div className="alert alert-success fs-5 fw-4">{message}</div>}
         <form className="contact-form" onSubmit={handleSubmit}>
         <input

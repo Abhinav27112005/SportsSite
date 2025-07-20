@@ -5,7 +5,7 @@ export default function Testimonials({ testimonials }) {
   return (
     <section className="testimonials-section">
       <div className="testimonials-container">
-        <h2 className="fw-bold text-center mb-5 fs-1 text-primary contact-title" style={{ letterSpacing: 1 }}>Testimonials</h2>
+        <h2 className="fw-bold text-center mb-4 fs-2 text-primary contact-title" style={{ letterSpacing: 1, marginTop: 0, fontSize: '2rem', lineHeight: 1.2 }}>Testimonials</h2>
         <div className="row justify-content-center g-4">
           {testimonials.map((t) => (
             <div className="col-md-4 d-flex" key={t.name}>

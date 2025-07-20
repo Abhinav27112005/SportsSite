@@ -30,12 +30,22 @@ body, .home-bg {
   scroll-behavior: auto;
 }
 
-section, .home-section {
-  padding: 18px 0 12px 0;
-  margin-bottom: 8px;
-  width: 100%;
-  max-width: 100vw;
-  overflow-x: hidden;
+section, .home-section, #gallery-section, #testimonials-section, #about-section, #contact-section {
+  min-height: calc(100vh - 90px);
+  box-sizing: border-box;
+}
+
+.section-title, .about-title, .contact-title, .testimonials-section h2 {
+  font-size: 2rem;
+  margin-top: 0;
+  margin-bottom: 1rem;
+  line-height: 1.2;
+}
+
+/* Remove extra padding/margin from first child in each section if present */
+.hero-section, .gallery-section, .testimonials-section, .about-section, .contact-section {
+  padding-top: 0 !important;
+  margin-top: 0 !important;
 }
 
 .hero-section {
@@ -289,13 +299,6 @@ footer a:hover {
   font-size: 0.95rem;
 }
 
-@media (max-width: 767px) {
-  .testimonial-card {
-    min-height: 300px;
-    max-width: 100%;
-  }
-}
-
 /* Testimonials Section Styling */
 .testimonials-section {
   background: #fdfdfd;
@@ -318,4 +321,161 @@ footer a:hover {
   margin: 0 auto;
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
+  }
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: 30% 20% 50%;
+  grid-template-rows: auto auto auto auto;
+  gap: 1.5rem 1rem;
+  background: transparent;
+  padding-left: 2.5rem;
+  padding-right: 2.5rem;
+}
+.footer-logo-title {
+  grid-column: 1 / 2;
+  grid-row: 1 / 2;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.footer-logo {
+  height: 70px;
+  width: 70px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(58,110,165,0.10);
+}
+.footer-title {
+  font-size: 2.1rem;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: 1px;
+}
+.footer-links-heading {
+  grid-column: 2 / 3;
+  grid-row: 1 / 2;
+  display: flex;
+  align-items: flex-end;
+  padding-bottom: 0.5rem;
+}
+.footer-admin-form {
+  grid-column: 3 / 4;
+  grid-row: 1 / 4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.footer-admin-card {
+  background: rgba(255,255,255,0.18);
+  border-radius: 1.5rem;
+  box-shadow: 0 4px 24px 0 rgba(58,110,165,0.10);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  padding: 2rem;
+  border: 1.5px solid rgba(200, 220, 255, 0.25);
+  max-width: 420px;
+  width: 100%;
+}
+.footer-about {
+  grid-column: 1 / 2;
+  grid-row: 2 / 3;
+  color: #e3eaf7;
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+}
+.footer-links-content {
+  grid-column: 2 / 3;
+  grid-row: 2 / 3;
+}
+.footer-links-content ul {
+  padding-left: 0;
+  margin-bottom: 0;
+}
+.footer-links-content li {
+  margin-bottom: 0.5rem;
+}
+.footer-connect {
+  grid-column: 1 / 3;
+  grid-row: 3 / 4;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  color: #fff;
+}
+.footer-admin-form-2 {
+  grid-column: 3 / 4;
+  grid-row: 3 / 4;
+}
+.footer-copyright {
+  grid-column: 1 / 4;
+  grid-row: 4 / 5;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #e3eaf7;
+  font-size: 1.08rem;
+  margin-top: 1.5rem;
+  padding-top: 1.2rem;
+  border-top: 1px solid #3a6ea5;
+}
+.footer-copyright .footer-signoff {
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}
+.footer-copyright .footer-credit {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 600;
+}
+.footer-copyright .footer-heart {
+  color: #ff4d6d;
+  font-size: 2.4rem;
+  font-weight: bold;
+  margin: 0 0.7rem;
+  vertical-align: middle;
+  animation: heartbeat 1.8s infinite;
+}
+.footer-copyright .footer-author {
+  font-size: 1.45rem;
+  font-weight: 900;
+  color: #3a6ea5;
+  margin-left: 0.7rem;
+  letter-spacing: 0.04em;
+  text-decoration: none;
+}
+
+@keyframes heartbeat {
+  0% { transform: scale(1); opacity: 0.8; }
+  25% { transform: scale(1.18); opacity: 1; }
+  50% { transform: scale(1); opacity: 0.8; }
+  75% { transform: scale(1.09); opacity: 1; }
+  100% { transform: scale(1); opacity: 0.8; }
+}
+
+@media (max-width: 991px) {
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "logo"
+      "about"
+      "links-heading"
+      "links-content"
+      "connect"
+      "admin"
+      "copyright";
+    grid-template-rows: repeat(7, auto);
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  .footer-logo-title { grid-area: logo !important; justify-content: flex-start; }
+  .footer-about { grid-area: about !important; }
+  .footer-links-heading { grid-area: links-heading !important; }
+  .footer-links-content { grid-area: links-content !important; }
+  .footer-connect { grid-area: connect !important; }
+  .footer-admin-form { grid-area: admin !important; margin-bottom: 2rem; }
+  .footer-admin-form-2 { display: none !important; }
+  .footer-copyright { grid-area: copyright !important; flex-direction: column; align-items: center; text-align: center; gap: 0.5rem; justify-content: center; }
 }

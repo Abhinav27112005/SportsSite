@@ -137,9 +137,9 @@ export const Home = () => {
             });
             setIsScrolling(false);
           }, 100);
-        }
+            }
       });
-    }
+        }
   }, [sections.length]);
 
   // Mouse wheel handler with scrollbar integration
@@ -312,7 +312,7 @@ export const Home = () => {
         <section 
           ref={(el) => sectionsRef.current[1] = el}
           id="gallery-section" 
-          style={{ width: '100%', maxWidth: '100vw', overflowX: 'hidden' }}
+          style={{ width: '100vw', maxWidth: '100vw', overflowX: 'hidden', padding: 0, margin: 0, background: 'transparent' }}
         >
           <motion.div {...fadeInRight}>
             <div style={{ minHeight: '40vh', width: '100%' }}>
@@ -370,91 +370,71 @@ export const Home = () => {
           className="mt-auto bg-dark text-white py-5" 
           style={{ width: '100%', maxWidth: '100vw' }}
         >
-        <div className="container">
-          <div className="row g-4">
-            <div className="col-md-4">
-              <h3 className="fw-bold mb-4">
-                <img 
-                  src="assets/Picture2.jpeg" 
-                  alt="Sports Club Logo" 
-                  style={{ height: '50px', marginRight: '10px' }}
-                />
-                Sports Club
-              </h3>
-              <p className="text-white-0 fs-5">
-                Founded in 1938, we've been nurturing badminton talent for over eight decades.
+        <div className="footer-grid">
+          {/* Row 1 */}
+          <div className="footer-logo-title">
+            <img src="assets/Picture2.jpeg" alt="Sports Club Logo" className="footer-logo" />
+            <span className="footer-title">Sports Club</span>
+          </div>
+          <div className="footer-links-heading">
+            <h5>Quick Links</h5>
+        </div>
+          <div className="footer-admin-form" style={{ gridRow: '1 / span 3' }}>
+            <div className="footer-admin-card">
+              <h5 className="fw-bold mb-3" style={{ color: '#fff' }}>Request Admin Privileges</h5>
+              <p className="mb-3" style={{ color: '#e3eaf7' }}>
+                Want to help manage the club? Request admin access by submitting your name and email. Our team will review your request and get in touch!
               </p>
+              <form onSubmit={e => { e.preventDefault(); alert('Request submitted! (Demo only)'); }} className="row g-3">
+                <div className="col-12">
+                  <input type="text" className="form-control" placeholder="Your Name" required style={{ borderRadius: '0.75rem', fontSize: '1.1rem' }} />
+                </div>
+                <div className="col-12">
+                  <input type="email" className="form-control" placeholder="Your Email" required style={{ borderRadius: '0.75rem', fontSize: '1.1rem' }} />
+                </div>
+                <div className="col-12 d-flex justify-content-end">
+                  <button type="submit" className="btn btn-primary px-4 py-2 fw-bold" style={{ borderRadius: '0.75rem', fontSize: '1.1rem', background: '#3a6ea5', border: 'none' }}>
+                    Request Access
+                  </button>
+                </div>
+              </form>
             </div>
-
-            <div className="col-md-4">
-              <h4 className="fw-bold mb-4">Quick Links</h4>
-              <ul className="list-unstyled">
-                <li> 
-                  <a href="/" className="text-decoration-none text-white hover-primary fs-5">
-                    <i className="bi bi-house-door me-2"></i> Home
-                  </a>
-                </li>
-                <li >
-                  <a href="/members" className="text-decoration-none text-white hover-primary fs-5">
-                    <i className="bi bi-people me-2"></i> Members
-                  </a>
-                </li>
-                <li >
-                  <a href="/events" className="text-decoration-none text-white hover-primary fs-5">
-                    <i className="bi bi-calendar-event me-2"></i> Events
-                  </a>
-                </li>
-                <li >
-                  <a href="/contact" className="text-decoration-none text-white hover-primary fs-5">
-                    <i className="bi bi-envelope me-2"></i> Contact Us
-                  </a>
-                </li>
+          </div>
+          {/* Row 2 */}
+          <div className="footer-about">
+            <p>Founded in 1938, we've been nurturing badminton talent for over eight decades.</p>
+          </div>
+          <div className="footer-links-content">
+            <ul className="list-unstyled mb-0">
+              <li><a href="/" className="text-decoration-none text-white hover-primary fs-6"><i className="bi bi-house-door me-2"></i> Home</a></li>
+              <li><a href="/members" className="text-decoration-none text-white hover-primary fs-6"><i className="bi bi-people me-2"></i> Members</a></li>
+              <li><a href="/events" className="text-decoration-none text-white hover-primary fs-6"><i className="bi bi-calendar-event me-2"></i> Events</a></li>
+              <li><a href="/contact" className="text-decoration-none text-white hover-primary fs-6"><i className="bi bi-envelope me-2"></i> Contact Us</a></li>
               </ul>
             </div>
-
-            <div className="col-md-4">
-              <h4 className="fw-bold mb-4">Connect With Us</h4>
-              <div className="d-flex gap-3 mb-4">
-                <a href="#" className="text-white ">
-                  <i className="bi bi-facebook hover-scale"></i>
-                </a>
-                <a href="#" className="text-white ">
-                  <i className="bi bi-instagram hover-scale"></i>
-                </a>
-                <a href="#" className="text-white ">
-                  <i className="bi bi-twitter-x hover-scale"></i>
-                </a>
-                <a href="#" className="text-white ">
-                  <i className="bi bi-youtube hover-scale"></i>
-                </a>
+          {/* Row 3 */}
+          <div className="footer-connect">
+            <h5 className="fw-bold mb-3">Connect With Us</h5>
+            <div className="d-flex gap-3 mb-2">
+              <a href="#" className="text-white "><i className="bi bi-facebook hover-scale"></i></a>
+              <a href="#" className="text-white "><i className="bi bi-instagram hover-scale"></i></a>
+              <a href="#" className="text-white "><i className="bi bi-twitter-x hover-scale"></i></a>
+              <a href="#" className="text-white "><i className="bi bi-youtube hover-scale"></i></a>
               </div>
               <div className="text-white-50">
                 <i className="bi bi-geo-alt me-2"></i>
                 Ranchi, Jharkhand, India
               </div>
             </div>
-          </div>
-
-          <hr className="my-4 bg-secondary" />
-          <div className="d-flex flex-column flex-md-row justify-content-between align-items-center">
-            <div className="mb-3 mb-md-0">
-              &copy; {new Date().getFullYear()} Sports Club. All rights reserved.
-            </div>
-            <div className="d-flex align-items-center">
-              <span className="me-2">Made with</span>
-              <span className="heart-beat text-danger fs-1">
-                <i className="bi bi-heart-fill"></i>
+          <div className="footer-admin-form-2"></div>
+          {/* Row 4 */}
+          <div className="footer-copyright">
+            <span className="footer-signoff">© 2025 Sports Club. All rights reserved.</span>
+            <span className="footer-credit">
+              Made with
+              <span className="footer-heart heart-beat">♥</span>
+              <a href="https://abhinavjha.netlify.app/" target="_blank" rel="noopener noreferrer" className="footer-author">Abhinav</a>
               </span>
-              <span className="ms-2">by</span>
-              <a 
-                href="https://abhinavjha.netlify.app/" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="text-decoration-none text-primary ms-2 fw-bold hover-underline cursor-pointer"
-              >
-                Abhinav
-              </a>
-            </div>
           </div>
         </div>
         </section>

@@ -177,19 +177,19 @@
 }
 
 /* Responsive */
-@media (max-width: 991px) {
-  .navbar-content {
-    gap: 1rem;
-  }
-  .navbar-nav {
-    gap: 1rem;
-}
-}
-@media (max-width: 768px) {
+@media (max-width: 1120px) {
   .navbar-nav {
     display: none !important;
   }
   .navbar-hamburger {
     display: block;
+  }
+}
+@media (min-width: 1121px) {
+  .navbar-nav {
+    display: flex !important;
+  }
+  .navbar-hamburger {
+    display: none;
   }
 }

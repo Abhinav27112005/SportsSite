@@ -175,7 +175,7 @@ export function Navbar() {
           </motion.div>
         </Box>
         {/* Desktop Nav Links */}
-        <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, justifyContent: 'center', alignItems: 'center' }}>
+        <Box sx={{ flexGrow: 1, display: { xs: 'none', lg: 'flex' }, justifyContent: 'center', alignItems: 'center' }}>
           {navItems.map(({ path, label }) => (
             <StyledNavLink key={label} to={path} end={path === '/'}>
               {label}
@@ -183,7 +183,7 @@ export function Navbar() {
           ))}
         </Box>
         {/* Desktop Account/Login */}
-        <Box sx={{ display: { xs: 'none', md: 'flex' }, alignItems: 'center', gap: 1 }}>
+        <Box sx={{ display: { xs: 'none', lg: 'flex' }, alignItems: 'center', gap: 1 }}>
               {isLoggedIn ? (
             [
               <IconButton color="primary" onClick={handleAccountMenuOpen} size="large" key="account-btn">
@@ -209,8 +209,8 @@ export function Navbar() {
               )}
         </Box>
         {/* Mobile Hamburger/X */}
-        <Box sx={{ display: { xs: 'flex', md: 'none' }, ml: 1 }}>
-          <IconButton color="primary" edge="end" onClick={mobileMenuAnchor ? handleMobileMenuClose : handleMobileMenuOpen}>
+        <Box sx={{ display: { xs: 'flex', lg: 'none' }, ml: 1, justifyContent: 'flex-end', flexGrow: 1 }}>
+          <IconButton color="primary" edge="end" onClick={mobileMenuAnchor ? handleMobileMenuClose : handleMobileMenuOpen} sx={{ ml: 'auto' }}>
             {mobileMenuAnchor ? <CloseIcon fontSize="large" /> : <MenuIcon fontSize="large" />}
           </IconButton>
         </Box>
@@ -229,7 +229,7 @@ export function Navbar() {
               minWidth: 220,
               borderRadius: 2,
               boxShadow: '0 4px 24px rgba(58, 110, 165, 0.10)',
-              mt: { xs: '5rem', sm: '5rem', md: 1.5 }, // Responsive margin-top for mobile
+              mt: '4rem', // Padding top for expanded dialog
             },
           }}
         >

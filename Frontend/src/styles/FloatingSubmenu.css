@@ -6,14 +6,14 @@
   display: flex;
   flex-direction: row;
   gap: 1.1rem;
-  background: var(--color-glass-bg);
-  box-shadow: 0 4px 24px rgba(58, 110, 165, 0.10);
-  border-radius: var(--border-radius);
+  background: rgba(255, 255, 255, 0.18); /* More transparent glass */
+  box-shadow: 0 4px 24px 0 rgba(58,110,165,0.10);
+  border-radius: 1.5rem;
   padding: 0.5rem 1.2rem;
   z-index: 1200;
-  backdrop-filter: blur(var(--color-glass-blur));
-  -webkit-backdrop-filter: blur(var(--color-glass-blur));
-  border: 1px solid var(--color-navbar-border);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border: 1.5px solid rgba(200, 220, 255, 0.18);
   align-items: center;
 }
 
