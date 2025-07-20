@@ -48,6 +48,7 @@ export const Home = () => {
   const [isScrolling, setIsScrolling] = useState(false);
   const scrollTimeoutRef = useRef(null);
   const scrollTriggersRef = useRef([]);
+  const touchStartYRef = useRef(null);
 
   const sections = ['hero', 'gallery', 'testimonials', 'about', 'contact', 'footer'];
 
@@ -177,28 +178,43 @@ export const Home = () => {
 
   // Touch handlers
   const handleTouchStart = useCallback((e) => {
-    e.touchStartY = e.touches[0].clientY;
+    touchStartYRef.current = e.touches[0].clientY;
   }, []);
 
   const handleTouchEnd = useCallback((e) => {
     if (isScrolling) return;
-    
-    const touchStartY = e.touchStartY || 0;
+    const touchStartY = touchStartYRef.current;
     const touchEndY = e.changedTouches[0].clientY;
     const diff = touchStartY - touchEndY;
-    
     if (Math.abs(diff) > 50) {
       const direction = diff > 0 ? 1 : -1;
-      const nextSection = currentSection + direction;
-      
-      if (nextSection >= 0 && nextSection < sections.length) {
-        navigateToSection(nextSection);
+      const currentSectionEl = sectionsRef.current[currentSection];
+      if (!currentSectionEl) return;
+      // Check if user is at the top or bottom of the section
+      const scrollTop = currentSectionEl.scrollTop;
+      const scrollHeight = currentSectionEl.scrollHeight;
+      const clientHeight = currentSectionEl.clientHeight;
+      const atTop = scrollTop === 0;
+      const atBottom = Math.abs(scrollTop + clientHeight - scrollHeight) < 2;
+      if ((direction === 1 && atBottom) || (direction === -1 && atTop)) {
+        const nextSection = currentSection + direction;
+        if (nextSection >= 0 && nextSection < sections.length) {
+          navigateToSection(nextSection);
+        }
       }
+      // Otherwise, allow native scroll within the section
     }
   }, [currentSection, isScrolling, sections.length, navigateToSection]);
 
+  // Utility to detect mobile/touch device
+  const isMobile = () => typeof window !== 'undefined' && window.innerWidth <= 700;
+
   // Event listeners
   useEffect(() => {
+    if (isMobile()) {
+      // On mobile, do not attach any custom scroll handlers
+      return;
+    }
     const wheelHandler = (e) => handleWheel(e);
     const keyHandler = (e) => handleKeyDown(e);
     const touchStartHandler = (e) => handleTouchStart(e);
@@ -437,7 +453,7 @@ export const Home = () => {
           </div>
         </section>
       </main>
-      <FloatingSubmenu />
+      <FloatingSubmenu navigateToSection={navigateToSection} />
     </div>
   );
 };

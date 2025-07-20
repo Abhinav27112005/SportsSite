@@ -4,13 +4,14 @@ import '../../styles/FloatingSubmenu.css';
 import { FaEnvelope, FaImages, FaInfoCircle, FaRegCopyright, FaArrowUp, FaStar, FaEllipsisH } from 'react-icons/fa';
 import { AnimatePresence, motion } from 'framer-motion';
 
+// Section order must match Home.jsx
 const allItems = [
-  { label: 'Contact', anchor: '#contact-section', icon: <FaEnvelope /> },
-  { label: 'Gallery', anchor: '#gallery-section', icon: <FaImages /> },
-  { label: 'Testimonials', anchor: '#testimonials-section', icon: <FaStar /> },
-  { label: 'About', anchor: '#about-section', icon: <FaInfoCircle /> },
-  { label: 'Footer', anchor: '#footer-section', icon: <FaRegCopyright /> },
-  { label: '', anchor: '#top', icon: <FaArrowUp />, isBackToTop: true },
+  { label: 'Contact', anchor: '#contact-section', sectionIndex: 4, icon: <FaEnvelope /> },
+  { label: 'Gallery', anchor: '#gallery-section', sectionIndex: 1, icon: <FaImages /> },
+  { label: 'Testimonials', anchor: '#testimonials-section', sectionIndex: 2, icon: <FaStar /> },
+  { label: 'About', anchor: '#about-section', sectionIndex: 3, icon: <FaInfoCircle /> },
+  { label: 'Footer', anchor: '#footer-section', sectionIndex: 5, icon: <FaRegCopyright /> },
+  { label: '', anchor: '#top', isBackToTop: true, icon: <FaArrowUp /> },
 ];
 const primaryCount = 3; // Contact, Gallery, Up Arrow
 
@@ -19,25 +20,28 @@ function isMobile() {
   return window.innerWidth <= 700;
 }
 
-export default function FloatingSubmenu() {
+export default function FloatingSubmenu({ navigateToSection }) {
   const location = useLocation();
   const [expanded, setExpanded] = useState(false); // true = all icons, false = 3+more
   const [expandedIndex, setExpandedIndex] = useState(null); // which icon is showing label
   if (location.pathname !== '/') return null;
 
   // Compose items to render based on state
-  let itemsToRender;
+  let itemsToRender, indexMap;
   if (!isMobile()) {
     itemsToRender = allItems;
+    indexMap = allItems.map((item, idx) => idx);
   } else if (!expanded) {
     itemsToRender = [
       ...allItems.slice(0, primaryCount),
       { label: 'More', anchor: '#more', icon: <FaEllipsisH />, isMore: true },
     ];
+    indexMap = [0, 1, 2, null]; // null for 'More'
   } else {
     itemsToRender = [
       ...allItems,
     ];
+    indexMap = allItems.map((item, idx) => idx);
   }
 
   // Handle click
@@ -46,9 +50,8 @@ export default function FloatingSubmenu() {
     if (!isMobile()) {
       if (item.isBackToTop) {
         window.scrollTo({ top: 0, behavior: 'smooth' });
-      } else if (!item.isMore) {
-        const el = document.querySelector(item.anchor);
-        if (el) el.scrollIntoView({ behavior: 'smooth' });
+      } else if (!item.isMore && typeof item.sectionIndex === 'number' && navigateToSection) {
+        navigateToSection(item.sectionIndex);
       }
       return;
     }
@@ -60,9 +63,8 @@ export default function FloatingSubmenu() {
       setTimeout(() => {
         if (item.isBackToTop) {
           window.scrollTo({ top: 0, behavior: 'smooth' });
-        } else {
-          const el = document.querySelector(item.anchor);
-          if (el) el.scrollIntoView({ behavior: 'smooth' });
+        } else if (typeof item.sectionIndex === 'number' && navigateToSection) {
+          navigateToSection(item.sectionIndex);
         }
         setTimeout(() => {
           setExpanded(false);
@@ -70,7 +72,7 @@ export default function FloatingSubmenu() {
         }, 1200); // label stays visible longer
       }, 350);
     }
-  }, []);
+  }, [navigateToSection]);
 
   // Animation variants
   const submenuVariants = {
