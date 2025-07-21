@@ -66,11 +66,6 @@ body {
   width: 100% !important;
 }
 
-/* Add padding to body to account for fixed navbar */
-body {
-  padding-top: 90px; /* Adjust based on your navbar height */
-}
-
 /* Ensure main content doesn't overlap with navbar */
 main {
   position: relative;

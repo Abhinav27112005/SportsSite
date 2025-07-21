@@ -4,13 +4,16 @@ import { Gallery } from "../../components/features/gallery/Gallery";
 import { AboutUs } from "../../components/common/AboutUS";
 import { ContactForm } from "../../components/forms/ContactForm";
 import FloatingSubmenu from "../../components/layout/FloatingSubmenu";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import "../../styles/Home.css";
 import Testimonials from "../../components/common/Testimonials";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ScrollToPlugin } from "gsap/ScrollToPlugin";
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
 
 // Register GSAP plugins
 gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
@@ -35,6 +38,68 @@ const testimonials = [
     quote: "My daughter's confidence and skills have soared. The club's environment is nurturing and inspiring.",
   },
 ];
+
+// Add schema for admin request form
+const adminRequestSchema = yup.object({
+  name: yup.string().required('Name is required').min(3, 'Name must be at least 3 characters'),
+  email: yup.string().email('Invalid email').required('Email is required'),
+});
+
+// Improved FloatingLabelInput with value tracking via RHF's watch
+export const FloatingLabelInput = ({ label, type = "text", register, error, value, name, ...rest }) => {
+  const [isFocused, setIsFocused] = useState(false);
+  // The label floats if focused or has value
+  const shouldFloat = isFocused || (!!value && value.length > 0);
+  return (
+    <div className="floating-label-group position-relative mb-3">
+      <input
+        type={type}
+        className={`form-control ${error ? 'is-invalid' : ''} py-3`}
+        {...register}
+        {...rest}
+        name={name}
+        value={value}
+        onFocus={e => { setIsFocused(true); rest.onFocus && rest.onFocus(e); }}
+        onBlur={e => { setIsFocused(false); rest.onBlur && rest.onBlur(e); }}
+        aria-invalid={!!error}
+        aria-describedby={error ? `${name}-error` : undefined}
+        autoComplete="off"
+      />
+      <motion.label
+        htmlFor={rest.id || name}
+        initial={false}
+        animate={shouldFloat ? { y: -24, scale: 0.85 } : { y: 0, scale: 1 }}
+        transition={{ type: 'spring', stiffness: 400, damping: 30 }}
+        className="floating-label position-absolute px-2"
+        style={{
+          left: 14,
+          top: 14,
+          pointerEvents: 'none',
+          fontSize: '1.1rem',
+          background: 'rgba(255,255,255,0.85)',
+          color: '#3a6ea5',
+          zIndex: 2,
+        }}
+      >
+        {label}
+      </motion.label>
+      <AnimatePresence>
+        {error && (
+          <motion.div
+            initial={{ opacity: 0, y: -8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -8 }}
+            className="invalid-feedback d-block"
+            id={`${name}-error`}
+            style={{ fontSize: '1rem' }}
+          >
+            {error.message}
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+};
 
 export const Home = () => {
   // Parallax for hero background
@@ -262,6 +327,21 @@ export const Home = () => {
     viewport: { once: true, amount: 0.2 },
   };
     
+  // Admin request form RHF
+  const { register: adminRegister, handleSubmit: handleAdminSubmit, formState: { errors: adminErrors }, reset: adminReset, watch: adminWatch } = useForm({
+    resolver: yupResolver(adminRequestSchema)
+  });
+  const [adminSuccess, setAdminSuccess] = useState(false);
+
+  const onAdminRequest = (data) => {
+    // Store in localStorage
+    const prev = JSON.parse(localStorage.getItem('adminRequests') || '[]');
+    localStorage.setItem('adminRequests', JSON.stringify([...prev, data]));
+    setAdminSuccess(true);
+    adminReset();
+    setTimeout(() => setAdminSuccess(false), 4000);
+  };
+    
   return (
     <div className="d-flex flex-column min-vh-100 home-bg" style={{ 
       minHeight: '100vh', 
@@ -316,8 +396,8 @@ export const Home = () => {
         >
           <motion.div {...fadeInRight}>
             <div style={{ minHeight: '40vh', width: '100%', paddingTop: '1rem' }}>
-              <Gallery />
-            </div>
+          <Gallery />
+        </div>
           </motion.div>
         </section>
 
@@ -384,18 +464,44 @@ export const Home = () => {
               <p className="mb-3" style={{ color: '#e3eaf7' }}>
                 Want to help manage the club? Request admin access by submitting your name and email. Our team will review your request and get in touch!
               </p>
-              <form onSubmit={e => { e.preventDefault(); alert('Request submitted! (Demo only)'); }} className="row g-3">
+              <form onSubmit={handleAdminSubmit(onAdminRequest)} className="row g-3">
                 <div className="col-12">
-                  <input type="text" className="form-control" placeholder="Your Name" required style={{ borderRadius: '0.75rem', fontSize: '1.1rem' }} />
+                  <FloatingLabelInput
+                    label="Your Name"
+                    name="name"
+                    register={adminRegister('name')}
+                    error={adminErrors.name}
+                    value={adminWatch('name', '')}
+                  />
                 </div>
                 <div className="col-12">
-                  <input type="email" className="form-control" placeholder="Your Email" required style={{ borderRadius: '0.75rem', fontSize: '1.1rem' }} />
+                  <FloatingLabelInput
+                    label="Your Email"
+                    name="email"
+                    type="email"
+                    register={adminRegister('email')}
+                    error={adminErrors.email}
+                    value={adminWatch('email', '')}
+                  />
                 </div>
                 <div className="col-12 d-flex justify-content-end">
                   <button type="submit" className="btn btn-primary px-4 py-2 fw-bold" style={{ borderRadius: '0.75rem', fontSize: '1.1rem', background: '#3a6ea5', border: 'none' }}>
                     Request Access
                   </button>
                 </div>
+                <AnimatePresence>
+                  {adminSuccess && (
+                    <motion.div
+                      initial={{ opacity: 0, y: -8 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -8 }}
+                      className="alert alert-success w-100 mt-2 mb-0"
+                      style={{ fontSize: '1rem' }}
+                    >
+                      Request submitted successfully!
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </form>
             </div>
           </div>

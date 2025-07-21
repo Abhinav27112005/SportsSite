@@ -17,10 +17,9 @@ import AdmissionForm from './pages/public/AdmissionForm';
 function AppContent() {
   const location = useLocation();
   const isLoginPage = location.pathname === '/login' || location.pathname === '/signup';
-  
   return (
-    <>
-      {!isLoginPage && <Navbar />} {/* Hide Navbar on login/signup */}
+    <div style={{ paddingTop: !isLoginPage ? '90px' : 0, minHeight: '100vh' }}>
+      {!isLoginPage && <Navbar />}
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
@@ -36,7 +35,7 @@ function AppContent() {
         <Route path="/admission" element={<AdmissionForm />} />
         <Route path="*" element={<div>404 Not Found</div>} />
       </Routes>
-    </>
+    </div>
   );
 }
 
