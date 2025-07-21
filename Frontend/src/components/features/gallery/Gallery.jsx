@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, Keyboard } from 'swiper/modules';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, calcGeneratorDuration } from 'framer-motion';
 import gsap from 'gsap';
 import 'swiper/css';
 import 'swiper/css/navigation';
@@ -95,7 +95,7 @@ export const Gallery = () => {
                 <p className="section-subtitle text-center text-xl mb-10 text-gray-700 font-medium italic">
                     Moments that define our legacy
                 </p>
-                <div className="imgBody glass-bg" ref={swiperRef} style={{height: '60vw', maxHeight: '70vh', minHeight: '300px', padding: '1.5rem 0'}}>
+                <div className="imgBody glass-bg" ref={swiperRef} style={{height: '160vw', maxHeight: '75vh', minHeight: '300px', padding: '1.5rem 0'}}>
                     <Swiper
                         modules={[Navigation, Pagination, Keyboard]}
                         navigation={{
@@ -166,7 +166,7 @@ export const Gallery = () => {
                         role="dialog"
                         style={{
                             position: 'fixed',
-                            top: 0,
+                            top: 'calc(90px - 1.5rem - 2.5rem)',
                             left: 0,
                             width: '100vw',
                             height: '100vh',

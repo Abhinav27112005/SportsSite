@@ -315,9 +315,9 @@ export const Home = () => {
           style={{ width: '100vw', maxWidth: '100vw', overflowX: 'hidden', padding: 0, margin: 0, background: 'transparent' }}
         >
           <motion.div {...fadeInRight}>
-            <div style={{ minHeight: '40vh', width: '100%' }}>
-          <Gallery />
-        </div>
+            <div style={{ minHeight: '40vh', width: '100%', paddingTop: '1rem' }}>
+              <Gallery />
+            </div>
           </motion.div>
         </section>
 
@@ -325,7 +325,6 @@ export const Home = () => {
         <section 
           ref={(el) => sectionsRef.current[2] = el}
           id="testimonials-section" 
-          className="py-5" 
           style={{ width: '100%', maxWidth: '100vw', overflowX: 'hidden' }}
         >
           <motion.div
