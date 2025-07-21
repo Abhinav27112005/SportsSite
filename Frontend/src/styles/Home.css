@@ -164,6 +164,7 @@ footer a:hover {
   font-weight: 600;
   position: relative;
   padding-bottom: 15px;
+  padding-top:15px;
 }
 
 .contact-title::after {
