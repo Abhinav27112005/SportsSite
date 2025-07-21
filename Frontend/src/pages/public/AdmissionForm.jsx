@@ -82,7 +82,7 @@ function AdmissionForm() {
           ></button>
         </div>
       )}
-      <h2 className="mb-4 fs-1 fw-bold">Student Admission Form</h2>
+      <h2 className="mb-4 fs-1 fw-bold contact-title">Student Admission Form</h2>
       <form onSubmit={handleSubmit(onSubmit)}>
         <FloatingLabelInput
           label="Student's Full Name"
@@ -138,9 +138,10 @@ function AdmissionForm() {
             value={courseValue}
             onFocus={() => setIsCourseFocused(true)}
             onBlur={() => setIsCourseFocused(false)}
-            className={`form-select ${errors.course ? 'is-invalid' : ''} fs-4 fw-normal`}
+            className={`form-select ${errors.course ? 'is-invalid' : ''} fw-normal`}
+            style={{padding:"1.1rem 1rem"}}
           >
-            <option value="">Select a Course</option>
+            <option value="">{null}</option>
             {courses.map((c, i) => (
               <option key={i} value={c}>{c}</option>
             ))}

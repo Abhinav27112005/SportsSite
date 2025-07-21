@@ -65,3 +65,7 @@ h2 {
   padding: 10px;
   font-weight: bold;
 }
+
+.form-container .contact-title::after{
+  width: 20rem;
+}
