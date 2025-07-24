@@ -1,11 +1,13 @@
 import express from 'express';
-import { signup, login, refreshToken } from '../controllers/authController.js';
+import { signup, login, refreshToken, verifyOTP, resendOTP } from '../controllers/authController.js';
 import { verifyToken } from '../middleware/auth.js';
 
 const router = express.Router();
 
 router.post('/signup', signup);
 router.post('/login', login);
+router.post('/verify-otp', verifyOTP);
+router.post('/resend-otp', resendOTP);
 router.get('/verify-token', verifyToken, (req, res) =>{
     res.json({
         valid:true,

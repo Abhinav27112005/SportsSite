@@ -9,6 +9,7 @@ import { Navbar } from './components/layout/Navbar';
 import Login from './pages/auth/Login';
 import Register from './pages/auth/Register';
 import Signup from './pages/auth/Signup';
+import VerifyOTP from './pages/auth/VerifyOTP';
 import AuthChecker from './context/AuthChecker';
 import Profile from './components/common/Profile';
 import AdminPanel from './components/features/admin/AdminPanel';
@@ -16,14 +17,15 @@ import AdmissionForm from './pages/public/AdmissionForm';
 
 function AppContent() {
   const location = useLocation();
-  const isLoginPage = location.pathname === '/login' || location.pathname === '/signup';
+  const isAuthPage = location.pathname === '/login' || location.pathname === '/signup' || location.pathname === '/verify-otp';
   return (
-    <div style={{ paddingTop: !isLoginPage ? '90px' : 0, minHeight: '100vh' }}>
-      {!isLoginPage && <Navbar />}
+    <div style={{ paddingTop: !isAuthPage ? '90px' : 0, minHeight: '100vh' }}>
+      {!isAuthPage && <Navbar />}
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
+        <Route path="/verify-otp" element={<VerifyOTP />} />
         <Route path="/members" element={<Members />} />
         <Route path="/events" element={<Events />} />
         <Route path="/coaching" element={<Coaching />} />

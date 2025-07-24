@@ -3,7 +3,6 @@ import { Link, useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../../styles/Login.css";
 import * as jwt_decode from 'jwt-decode';
-import validate from "./Loginvalidation";
 import { refreshAuthToken } from "../../services/api/client";
 import { useAuth } from "../../context/AuthContext";
 import { useForm } from 'react-hook-form';
@@ -77,19 +76,37 @@ const Login = () => {
     };
   }, []);
 
+  const [submitError, setSubmitError] = useState('');
+
   const onSubmit = async (data) => {
     setIsLoading(true);
+    setSubmitError('');
     try {
       const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/auth/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data)
       });
+      
+      const responseData = await response.json();
+      
       if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || 'Login failed');
+        // Check if the error is due to unverified email
+        if (response.status === 403 && responseData.code === 'EMAIL_NOT_VERIFIED') {
+          // Redirect to OTP verification page
+          navigate('/verify-otp', { 
+            state: { 
+                  email: data.email ,
+                  fromLogin: true,
+                  message: responseData.message || "Please verify your email to continue logging in."
+              } 
+          });
+          return;
+        }
+        throw new Error(responseData.message || 'Login failed');
       }
-      const { token, user } = await response.json();
+      
+      const { token, user } = responseData;
       login(token, user);
       navigate('/');
     } catch (error) {
@@ -97,9 +114,8 @@ const Login = () => {
       if (error.message.includes('Failed to fetch')) {
         errorMessage = 'Cannot connect to server - check your internet connection';
       }
-      // Set error for submit
-      // Use setError from RHF if desired, or show as alert below
-      setIsLoading(false);
+      setSubmitError(errorMessage);
+      console.error('Login error:', error);
     } finally {
       setIsLoading(false);
     }
@@ -129,11 +145,18 @@ const Login = () => {
             value={watch('password', '')}
           />
           {/* Show submit error if needed */}
-          {errors.submit && (
-              <div className="alert alert-danger">
-                {errors.submit}
-              </div>
-              )}
+          <AnimatePresence>
+            {submitError && (
+              <motion.div 
+                className="alert alert-danger"
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0 }}
+              >
+                {submitError}
+              </motion.div>
+            )}
+          </AnimatePresence>
           <button type="submit" className="cta-button" disabled={isLoading}>{isLoading ? "Login..." : "Login"}</button>
         </form>
         <p className="auth-footer">

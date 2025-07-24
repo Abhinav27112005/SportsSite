@@ -174,6 +174,7 @@ const handlePasswordSubmit = async (e) => {
                       type="email"
                       className="form-control fs-4"
                       value={formData.email}
+                      disabled={true} // Email is not editable
                       onChange={(e) => setFormData({...formData, email: e.target.value})}
                       required
                     />

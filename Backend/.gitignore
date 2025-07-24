@@ -53,3 +53,7 @@ Thumbs.db
 config/credentials.json
 *.pem
 *.key
+
+
+#random text
+*.txt

@@ -6,8 +6,7 @@ import Validate from "./SignupValidation";
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import { motion, AnimatePresence } from 'framer-motion';
-// Import FloatingLabelInput from Home (or move to shared component if desired)
+import { AnimatePresence, motion } from 'framer-motion';
 import FloatingLabelInput from '../../components/common/FloatingLabelInput';
 
 const signupSchema = yup.object({
@@ -23,8 +22,11 @@ const Signup = () => {
     resolver: yupResolver(signupSchema)
   });
   const [isLoading, setIsLoading] = useState(false);
+  const [submitError, setSubmitError] = useState('');
+
   const onSubmit = async (data) => {
     setIsLoading(true);
+    setSubmitError('');
     try {
       const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/auth/signup`, {
         method: 'POST',
@@ -37,14 +39,18 @@ const Signup = () => {
       });
       const resData = await response.json();
       if (response.ok) {
-        navigate('/login');
+        // Use the success message from the backend if available
+        console.log(resData.message || "Signup successful");
+        // Redirect to OTP verification page with email
+        navigate('/verify-otp', { state: { email: data.email } });
       } else {
-        // Show error
-        // ...
+        // Display the error message from the backend
+        setSubmitError(resData.error || resData.message || "Signup failed. Please try again.");
+        console.error("Signup error:", resData);
       }
     } catch (error) {
-      // Show error
-      // ...
+        setSubmitError("Something went wrong while connecting to the server");
+        console.error("Signup fetch error:", error);
     } finally {
       setIsLoading(false);
     }
@@ -87,8 +93,17 @@ const Signup = () => {
             error={errors.confirmPassword}
             value={watch('confirmPassword', '')}
           />
-          {/* Show submit error if needed */}
-          {/* ...existing error handling... */}
+          
+          {/* Show submit error if present */}
+          {submitError && (
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className="alert alert-danger">
+              {submitError}
+            </motion.div>
+          )}
+          
           <button type="submit" className="cta-button" disabled={isLoading}>{isLoading ? 'Signing Up...' : 'Sign Up'}</button>
         </form>
         <p className="auth-footer">

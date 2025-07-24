@@ -28,8 +28,7 @@ const corsOptions = {
   origin: [
     'https://sportclubs.netlify.app', // Your Netlify frontend
     'https://sportssite.onrender.com', // Your Render backend
-    'http://localhost:5173', 
-    'http://localhost:3000',
+    'http://localhost:5173',
     process.env.FRONTEND_URL // Keep this for flexibility
   ].filter(Boolean),
   credentials: true,
