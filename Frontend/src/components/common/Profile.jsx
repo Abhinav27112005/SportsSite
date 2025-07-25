@@ -17,7 +17,8 @@ const Profile = () => {
     confirmPassword: '' 
   });
   const navigate = useNavigate();
-
+  // Add this state at the top
+  const [successMessage, setSuccessMessage] = useState('');
   // Fetch user data 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -66,9 +67,12 @@ const Profile = () => {
 
 const handlePasswordSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
+    setError('');
+    setSuccessMessage('');
     if (passwordData.newPassword !== passwordData.confirmPassword) {
-        setError("New passwords don't match");
-        return;
+        setSuccessMessage("Password changed successfully!");
+        setTimeout(() => setSuccessMessage(''), 5000); // Clear success after 5 seconds
     }
 
     try {
@@ -84,13 +88,20 @@ const handlePasswordSubmit = async (e) => {
             // Success case
             setIsChangingPassword(false);
             setPasswordData({ currentPassword: '', newPassword: '', confirmPassword: '' });
+            setSuccessMessage("Password changed successfully!");
+        setTimeout(() => setSuccessMessage(''), 5000); // Clear success after 5 seconds
             setError(null);
+            if(response.token){
+              localStorage.setItem('authToken',response.token);
+            }
         } else {
-            setError(response.error || "Password change failed");
+             setError(response.error || "Password change failed");
+        setTimeout(() => setError(''), 5000); // Clear error after 5 seconds
         }
+        setIsLoading(false);
     } catch (error) {
         console.error('Password change error:', error);
-        setError(error.message || "Password change failed");
+        setTimeout(()=>setError(error.message || "Password change failed"),5000);
     }
 };
 
@@ -143,7 +154,7 @@ const handlePasswordSubmit = async (e) => {
                 My Profile
               </h2>
             </div>
-            
+            {successMessage && <div className="alert alert-success mt-2">{successMessage}</div>}
             <div className="card-body">
               <div className="d-flex flex-column align-items-center mb-4">
                 <div 
@@ -194,9 +205,9 @@ const handlePasswordSubmit = async (e) => {
                   </div>
                 </form>
               ) : isChangingPassword ? (
-                <form onSubmit={handlePasswordSubmit}>
-                  {error && <div className="alert alert-danger">{error}</div>}
-                  
+                <>
+                {error && <div className="alert alert-danger">{error}</div>}
+                <form onSubmit={handlePasswordSubmit}>                  
                   <div className="mb-3">
                     <label className="form-label fw-bold fs-4">Current Password</label>
                     <input
@@ -232,18 +243,23 @@ const handlePasswordSubmit = async (e) => {
                   </div>
                   
                   <div className="d-flex gap-3">
-                    <button type="submit" className="btn btn-primary fs-4 fw-bold">
+                    <button type="submit" className="btn btn-primary fs-4 fw-bold" disabled={isLoading}>
                       <i className="bi bi-check-circle"></i> Change Password
                     </button>
                     <button 
                       type="button" 
                       className="btn btn-outline-secondary fs-4 fw-bold"
-                      onClick={() => setIsChangingPassword(false)}
+                      onClick={() =>{
+                        setIsChangingPassword(false);
+                        setError('');
+                        setSuccessMessage('');
+                      }}
                     >
                       <i className="bi bi-x-circle"></i> Cancel
                     </button>
                   </div>
                 </form>
+              </>
               ) : (
                 <>
                   <div className="mb-4">

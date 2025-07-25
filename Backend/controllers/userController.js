@@ -1,6 +1,7 @@
 import bcrypt from 'bcryptjs';
 import User from '../models/User.js';
-
+import jwt from 'jsonwebtoken';
+import jwtConfig from '../config/jwt.js'
 const saltRounds = 12;
 
 export const getProfile = async (req, res) => {
@@ -43,7 +44,14 @@ export const changePassword = async (req, res) => {
         
         const hashedPassword = await bcrypt.hash(newPassword, saltRounds);
         await User.updatePassword(req.user.id, hashedPassword);
-        res.json({ message: "Password changed successfully" });
+
+        //Issue a new Token
+        const token = jwt.sign(
+        { id: user.id, is_admin: user.is_admin },
+        jwtConfig.secret,
+        { expiresIn: jwtConfig.expiresIn || '1h' }
+        );
+        res.json({ message: "Password changed successfully",token});
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
